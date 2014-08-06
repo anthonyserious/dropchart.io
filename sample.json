@@ -1,0 +1,8 @@
+{
+    "options": {"title":"Test line chart thing"},
+    "values":[
+      ["series1", "series2"],
+      [123, 102],
+      [113, 112]
+    ]
+}

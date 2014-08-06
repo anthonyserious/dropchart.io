@@ -1,0 +1,14 @@
+body { 
+    font-family: 'Droid Serif', serif;
+}
+
+.drop {
+    width:300px;
+    height:100px;
+    line-height:100px;
+    border:1px dashed #CCC;
+    text-align:center;
+}
+
+
+
