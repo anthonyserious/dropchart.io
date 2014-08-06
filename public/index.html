@@ -26,66 +26,28 @@
     <![endif]-->
   </head>
   <body>
-        <div class="container">
+        <div class="container" align="center">
+        <div class="jumbotron">
           <div>
             <h1>DropChart.</h1>
+            <!--<div id="dropArea" class="drop" ondrop="drop(event)" ondragover="allowDrop(event)">Drop here</div>-->
             <div id="dropArea" class="drop">Drop here</div>
 
-            <div id="chart_div" style="width: 900px; height: 500px;"></div>
           </div>
-        </div><!-- // container -->
+        </div><!-- // jumbotron -->
+        </div>
+        <div class="container" align="center">
+            <div id="chart_div" style="width: 900px; height: 500px;"></div>
+        </div>
  
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!--<script src="/js/dropchart.js"></script>-->
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script>
-        $('#dropArea').on('dragover', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        });
-        $('#dropArea').on('dragenter', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        });
-
-        $('#dropArea').on('drop', function(e){
-            if(e.originalEvent.dataTransfer){
-                if(e.originalEvent.dataTransfer.files.length) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    var file = e.originalEvent.dataTransfer.files[0];
-                    var reader = new FileReader();
-
-                    reader.onload = function(evt) {
-                        var inData = JSON.parse(evt.target.result);
-                        console.log(evt.target.result);
-                        console.log(inData);
-                        google.load("visualization", "1", {packages:["corechart"]});
-                        google.setOnLoadCallback(drawChart);
-                        function drawChart() {
-                            var v = [
-                              ["series1", "series2"],
-                              [123, 102],
-                              [113, 112]
-                            ];
-                            var chartData = google.visualization.arrayToDataTable(v);
-                            //var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-                            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-                            chart.draw(chartData, {title:"foo"});
-                        }
-                    }
-                    reader.readAsText(file);
-                }
-            }
-        });
-    </script>
-    
-
   </body>
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script src="/js/dropchart.js"></script>
 </html>
 
 

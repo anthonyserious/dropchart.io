@@ -1,3 +1,8 @@
+.jumbotron {
+    font-family: 'Droid Serif', serif;
+    background: transparent !important
+}
+
 body { 
     font-family: 'Droid Serif', serif;
 }
@@ -9,6 +14,5 @@ body {
     border:1px dashed #CCC;
     text-align:center;
 }
-
 
 
