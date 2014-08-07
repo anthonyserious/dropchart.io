@@ -25,7 +25,7 @@ $('#dropArea').on('drop', function(e){
                             packages:["corechart"],
                             callback: function () {
                                 var chartData = google.visualization.arrayToDataTable(inData['values']);
-                                var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                                var chart = new google.visualization.SteppedAreaChart(document.getElementById('chart_div'));
                                 chart.draw(chartData, inData['options']);
                             }
                         }
