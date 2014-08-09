@@ -37,7 +37,7 @@
       </div><!-- // jumbotron -->
     </div><!-- // container -->
     <div class="container" align="center">
-      <div id="chart_div" style="chartDiv"></div>
+      <div id="chartDiv" style="chartDiv"></div>
     </div>
   </body>
   <!-- Bootstrap core JavaScript
@@ -46,6 +46,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script src="/js/dropchart.js"></script>
+  <script>
+    $(document).ready(function() {
+      dropchart.init($('#dropArea'), $('#chartDiv'));
+    });
+  </script>
 </html>
 
 
