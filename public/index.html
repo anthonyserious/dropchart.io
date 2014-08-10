@@ -33,18 +33,61 @@
           <h1>dropchart.io</h1>
           <p>
           <div id="dropArea" class="drop"><h2><i>drop here</i></h2></div>
+          <p><p>
+          <!--<button id="btnSave" class="btn btn-lg btn-default"><span class="glyphicon glyphicon-save"></span></button>-->
+          <button id="btnAbout" class="btn btn-lg btn-default" data-toggle="modal" data-target="#modalAbout"><span class="glyphicon glyphicon-info-sign"></span></button>
+          <button id="btnHelp" class="btn btn-lg btn-default" data-toggle="modal" data-target="#modalHelp"><span class="glyphicon glyphicon-question-sign"></span></button>
         </div>
       </div><!-- // jumbotron -->
     </div><!-- // container -->
     <div class="container" align="center">
       <div id="chartDiv" style="chartDiv"></div>
     </div>
+
+    <!-- about -->
+    <div class="modal fade" id="modalAbout" tabindex="-1" role="dialog" aria-labelledby="modalAboutLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="modalAboutLabel">About dropchart.io</h4>
+          </div>
+          <div class="modal-body">
+            dropchart.io is about charts and graphs and such, and mostly about quickly generating them.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- help -->
+    <div class="modal fade" id="modalHelp" tabindex="-1" role="dialog" aria-labelledby="modalHelpLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="modalHelpLabel">Help</h4>
+          </div>
+          <div class="modal-body">
+            To get some nice graphs, just drag and drop a .csv or .json file onto the drop zone and dropchart.io will render your charts for you.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </body>
   <!-- Bootstrap core JavaScript
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script src="/js/bootstrap.min.js"></script>
   <script src="/js/dropchart.js"></script>
   <script>
     $(document).ready(function() {
