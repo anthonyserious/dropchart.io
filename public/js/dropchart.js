@@ -2,7 +2,7 @@
 
 var dropchart = function() {
   var dropArea;
-  var chartDiv;
+  var chartParent;
 
   var colorSchemes = {
     none: [],
@@ -14,7 +14,7 @@ var dropchart = function() {
     colors: colorSchemes.first,
     backgroundColor: {
       stroke: '#055333',
-      strokeWidth: 1
+      strokeWidth: 0
     }
   }
 
@@ -41,6 +41,10 @@ var dropchart = function() {
               callback: function () {
                   var chartData = google.visualization.arrayToDataTable(values);
                   var chart = new google.visualization[chartType](elem);
+                  //google.visualization.events.addListener(chart, 'ready', function () {
+                    //elem.innerHTML = '<img src="' + chart.getImageURI() + '">';
+                    //console.log(elem.innerHTML);
+                  //});
                   chart.draw(chartData, options);
               }
           }
@@ -49,9 +53,9 @@ var dropchart = function() {
   }
 
   return {
-    init:function(inDropArea, inChartDiv)  {
+    init:function(inDropArea, inChartParent)  {
       dropArea = inDropArea;
-      chartDiv = inChartDiv;
+      chartParent = inChartParent;
 
       dropArea.on('dragover', function(e) {
           e.preventDefault();
@@ -66,9 +70,13 @@ var dropchart = function() {
           e.preventDefault();
           e.stopPropagation();
           if(e.originalEvent.dataTransfer){
-              if(e.originalEvent.dataTransfer.files.length) {
-                  var file = e.originalEvent.dataTransfer.files[0];
+              for (var i = 0; i < e.originalEvent.dataTransfer.files.length; i++) {
+              //if(e.originalEvent.dataTransfer.files.length) {
+                  var file = e.originalEvent.dataTransfer.files[i];
                   var reader = new FileReader();
+                  var chartId = "chartDiv"+i;
+
+                  chartParent.append('<div class="col-md-1">&nbsp;</div><div class="col-md-10" align="center"><div id="'+chartId+'" class="chartDiv drop-shadow"></div></div><div class="col-md-1">&nbsp;</div>');
 
                   reader.onload = function(evt) {
                       var inData = JSON.parse(evt.target.result);
@@ -78,7 +86,7 @@ var dropchart = function() {
                             options[k] = inData['options'][k];
                           }
                       }
-                      drawOne(chartDiv[0], options, "SteppedAreaChart", inData['values']);
+                      drawOne($('#'+chartId)[0], options, "SteppedAreaChart", inData['values']);
                   }
                   reader.readAsText(file);
               }

@@ -69,18 +69,23 @@ body {
     width:300px;
     line-height:100px;
     border:3px dashed #420013;
+    border-radius: 50px;
     text-align:center;
-    vertical-align:center;
+    vertical-align: center;
 }
+
 .chartDiv {
-    height: 500px !important;
-    width: 900px !important;
-    border:1px #CCC;
+    height: 350px !important;
 }
 
 .drop:hover{
   /*background-color: #A4B9B1*/
-  background-color: #EEE
+  background-color: #ddd
 }
 
+.drop-shadow {
+  -webkit-box-shadow: 0 0 15px 2px rgba(0, 0, 0, .5);
+  box-shadow: 0 0 15px 2px rgba(0, 0, 0, .5);
+  border-radius:5px;
+}
 

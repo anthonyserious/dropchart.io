@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="dropchart.io - a dynamic chart/graph sharing application">
+    <meta name="author" content="Anthony Schneider">
     <link rel="icon" href="../../favicon.ico">
 
     <title>dropchart.io</title>
 
-    <link type="text/css" rel="stylesheet" href="/css/theme.css">
+    <link type="text/css" rel="stylesheet" href="/css/dropchart.css">
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -28,21 +28,49 @@
   </head>
   <body>
     <div class="container" align="center">
+      <div><p></div>
       <div class="jumbotron">
         <div>
           <h1>dropchart.io</h1>
           <p>
-          <div id="dropArea" class="drop"><h2><i>drop here</i></h2></div>
+          <div id="dropArea" class="drop"></div><!--<i>need input</i></div>-->
           <p><p>
           <!--<button id="btnSave" class="btn btn-lg btn-default"><span class="glyphicon glyphicon-save"></span></button>-->
-          <button id="btnAbout" class="btn btn-lg btn-default" data-toggle="modal" data-target="#modalAbout"><span class="glyphicon glyphicon-info-sign"></span></button>
-          <button id="btnHelp" class="btn btn-lg btn-default" data-toggle="modal" data-target="#modalHelp"><span class="glyphicon glyphicon-question-sign"></span></button>
+          <button id="btnAbout" class="btn btn btn-primary" data-toggle="modal" data-target="#modalAbout">Help</button>
+          <button id="btnHelp" class="btn btn btn-primary" data-toggle="modal" data-target="#modalHelp">About</button>
         </div>
       </div><!-- // jumbotron -->
     </div><!-- // container -->
-    <div class="container" align="center">
-      <div id="chartDiv" style="chartDiv"></div>
-    </div>
+    <div class="container">
+      <!-- row -->
+      <div class="col-md-3">&nbsp;</div>
+      <div class="col-md-6" align="center">
+        <!--<i>advertisement here?</i>-->
+      </div><!-- col-md-6 -->
+      <div class="col-md-3">&nbsp;</div>
+    </div><!-- //container -->
+
+    <!-- chart container -->
+    <div class="container" id="chartParent">
+      <!-- row -->
+      <div class="col-md-1">&nbsp;</div>
+      <div class="col-md-10" align="center">
+        <div id="chartDiv" style="chartDiv drop-shadow"></div>
+      </div><!-- col-md-10 -->
+      <div class="col-md-1">&nbsp;</div>
+    </div><!-- //container -->
+
+    <!-- empty placeholder -->
+    <div class="container">
+      <!-- row -->
+      <div class="col-md-3">&nbsp;</div>
+      <div class="col-md-6" align="center">
+        <!--<i>advertisement here?</i>-->
+      </div><!-- col-md-6 -->
+      <div class="col-md-3">&nbsp;</div>
+    </div><!-- //container -->
+
+
 
     <!-- about -->
     <div class="modal fade" id="modalAbout" tabindex="-1" role="dialog" aria-labelledby="modalAboutLabel" aria-hidden="true">
@@ -60,7 +88,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div><!-- // about modal -->
 
     <!-- help -->
     <div class="modal fade" id="modalHelp" tabindex="-1" role="dialog" aria-labelledby="modalHelpLabel" aria-hidden="true">
@@ -68,7 +96,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="modalHelpLabel">Help</h4>
+            <h4 class="modal-title" id="modalHelpLabel">How does dropchart.io work?</h4>
           </div>
           <div class="modal-body">
             To get some nice graphs, just drag and drop a .csv or .json file onto the drop zone and dropchart.io will render your charts for you.
@@ -78,9 +106,7 @@
           </div>
         </div>
       </div>
-    </div>
-
-
+    </div><!-- // help modal -->
   </body>
   <!-- Bootstrap core JavaScript
   ================================================== -->
@@ -89,11 +115,7 @@
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script src="/js/bootstrap.min.js"></script>
   <script src="/js/dropchart.js"></script>
-  <script>
-    $(document).ready(function() {
-      dropchart.init($('#dropArea'), $('#chartDiv'));
-    });
-  </script>
+  <script>$(document).ready(function() { dropchart.init($('#dropArea'), $('#chartParent')); });</script>
 </html>
 
 
