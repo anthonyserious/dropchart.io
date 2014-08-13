@@ -33,7 +33,26 @@ $('#dropArea').on('drop', function(e){
                 }
             }
             reader.readAsText(file);
+            $("#saveButton").show();
         }
     }
 });
 
+
+$('#saveButton').hide();
+
+
+$('#saveButton').click(function(){
+    var img = $('#chart_div');
+    html2canvas(img, {
+        onrendered: function(canvas) {
+        var new_img = canvas.toDataURL();
+        window.open(new_img);
+        },
+        letterRendering: true,
+        background: undefined,
+        logging: true  
+    });
+});
+
+// $('.btn').click(saveImage);

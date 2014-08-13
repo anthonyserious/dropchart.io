@@ -33,11 +33,12 @@
           <h1>dropchart.io</h1>
           <p>
           <div id="dropArea" class="drop"><h2><i>drop here</i></h2></div>
+          <div id="saveButton" class="btn"><h2><i>Save a PNG</i></h2></div>
         </div>
       </div><!-- // jumbotron -->
     </div><!-- // container -->
     <div class="container" align="center">
-      <div id="chart_div" style="chartDiv"></div>
+      <div id="chart_div" class="saveable" style="chartDiv"></div>
     </div>
   </body>
   <!-- Bootstrap core JavaScript
@@ -45,6 +46,7 @@
   <!-- Placed at the end of the document so the pages load faster -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script src="/js/html2canvas.js"></script>
   <script src="/js/dropchart.js"></script>
 </html>
 
