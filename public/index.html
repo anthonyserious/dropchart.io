@@ -33,14 +33,16 @@
         <div>
           <h1>dropchart.io</h1>
           <p>
-          <div id="dropArea" class="drop"></div><!--<i>need input</i></div>-->
-          <p><p>
+          <!--<div id="dropArea" class="drop"></div>--><!--<i>need input</i></div>-->
+          <i>Drop your CSV or JSON files anywhere on the page to generate some very pretty charts.</i>
+          <p>
           <!--<button id="btnSave" class="btn btn-lg btn-default"><span class="glyphicon glyphicon-save"></span></button>-->
-          <button id="btnAbout" class="btn btn btn-primary" data-toggle="modal" data-target="#modalAbout">Help</button>
-          <button id="btnHelp" class="btn btn btn-primary" data-toggle="modal" data-target="#modalHelp">About</button>
+          <button id="btnAbout" class="btn btn btn-default" data-toggle="modal" data-target="#modalAbout">Help</button>
+          <button id="btnHelp" class="btn btn btn-default" data-toggle="modal" data-target="#modalHelp">About</button>
         </div>
       </div><!-- // jumbotron -->
     </div><!-- // container -->
+
     <div class="container">
       <!-- row -->
       <div class="col-md-3">&nbsp;</div>
@@ -52,12 +54,6 @@
 
     <!-- chart container -->
     <div class="container" id="chartParent">
-      <!-- row -->
-      <div class="col-md-1">&nbsp;</div>
-      <div class="col-md-10" align="center">
-        <div id="chartDiv" style="chartDiv drop-shadow"></div>
-      </div><!-- col-md-10 -->
-      <div class="col-md-1">&nbsp;</div>
     </div><!-- //container -->
 
     <!-- empty placeholder -->
@@ -115,7 +111,9 @@
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script src="/js/bootstrap.min.js"></script>
   <script src="/js/dropchart.js"></script>
-  <script>$(document).ready(function() { dropchart.init($('#dropArea'), $('#chartParent')); });</script>
+  <script>
+    $(document).ready(function() { dropchart.init($(document), $('#chartParent')); });
+  </script>
 </html>
 
 
