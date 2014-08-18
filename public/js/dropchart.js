@@ -94,11 +94,30 @@ var dropchart = function() {
                         drawOne($('#'+chartId)[0], options, "SteppedAreaChart", inData['values']);
                     }
 
+                  } else if (file_type === "csv") {
+
+                    // console.log("the user added a csv file");
+
+                     reader.onload = function(evt) {
+                        var inData = Papa.parse(evt.target.result);
+                        console.log(inData);
+                        var options = defaultOptions;
+                        // var googleChartData = google.visualization.arrayToDataTable($.parseJSON(chartData));
+                        if (inData['options']) {
+                            for (var k in inData['options']) {
+                              options[k] = inData['options'][k];
+                            }
+                        }
+                        drawOne($('#'+chartId)[0], options, "SteppedAreaChart", inData['values']);
+                    }
+
+
+
+
+
                   } else { // else goes here
                     console.log("this doesn't appear to be a valid chart");
-
-                    debugger;
-                    $('#chartDiv0').text("Sorry, this doesn't appear to be a chart we can work with right now");
+                    $('#chartDiv0').append("<h2>Sorry, this doesn't appear to be a chart we can work with right now</h2>");
                   }
 
 
