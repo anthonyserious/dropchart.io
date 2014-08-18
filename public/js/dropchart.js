@@ -94,7 +94,13 @@ var dropchart = function() {
                         drawOne($('#'+chartId)[0], options, "SteppedAreaChart", inData['values']);
                     }
 
-                  } // else goes here
+                  } else { // else goes here
+                    console.log("this doesn't appear to be a valid chart");
+
+                    debugger;
+                    $('#chartDiv0').text("Sorry, this doesn't appear to be a chart we can work with right now");
+                  }
+
 
                   reader.readAsText(file);
               }
