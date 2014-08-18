@@ -78,16 +78,24 @@ var dropchart = function() {
 
                   chartParent.append('<div class="col-md-1">&nbsp;</div><div class="col-md-10" align="center"><div id="'+chartId+'" class="chartDiv drop-shadow"></div></div><div class="col-md-1">&nbsp;</div>');
 
-                  reader.onload = function(evt) {
-                      var inData = JSON.parse(evt.target.result);
-                      var options = defaultOptions;
-                      if (inData['options']) {
-                          for (var k in inData['options']) {
-                            options[k] = inData['options'][k];
-                          }
-                      }
-                      drawOne($('#'+chartId)[0], options, "SteppedAreaChart", inData['values']);
-                  }
+                  // building a control flow for csv or json
+                  var file_type = file.name.split('.').pop();
+
+                  if ( file_type === "json") {
+
+                    reader.onload = function(evt) {
+                        var inData = JSON.parse(evt.target.result);
+                        var options = defaultOptions;
+                        if (inData['options']) {
+                            for (var k in inData['options']) {
+                              options[k] = inData['options'][k];
+                            }
+                        }
+                        drawOne($('#'+chartId)[0], options, "SteppedAreaChart", inData['values']);
+                    }
+
+                  } // else goes here
+
                   reader.readAsText(file);
               }
           }
