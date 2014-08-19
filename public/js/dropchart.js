@@ -34,7 +34,7 @@ var dropchart = function() {
   ];
 
   // build a single chart
-  function drawOne(elem, options, chartType, values) {
+  function drawJSON(elem, options, chartType, values) {
     if(google) {
       google.load("visualization", "1.0", {
               packages:["corechart"],
@@ -51,6 +51,26 @@ var dropchart = function() {
       );
     }
   }
+
+  function drawCSV(elem, options, chartType, values) {
+    if(google) {
+      google.load("visualization", "1.0", {
+              packages:["corechart"],
+              callback: function () {
+                  // values = $parse.jsonData(values);
+                  var chartData = google.visualization.arrayToDataTable(values);
+                  var chart = new google.visualization[chartType](elem);
+                  //google.visualization.events.addListener(chart, 'ready', function () {
+                    //elem.innerHTML = '<img src="' + chart.getImageURI() + '">';
+                    //console.log(elem.innerHTML);
+                  //});
+                  chart.draw(chartData, options);
+              }
+          }
+      );
+    }
+  }
+
 
   return {
     init:function(inDropArea, inChartParent)  {
@@ -91,7 +111,8 @@ var dropchart = function() {
                               options[k] = inData['options'][k];
                             }
                         }
-                        drawOne($('#'+chartId)[0], options, "SteppedAreaChart", inData['values']);
+
+                        drawJSON($('#'+chartId)[0], options, "SteppedAreaChart", inData['values']);
                     }
 
                   } else if (file_type === "csv") {
@@ -100,15 +121,19 @@ var dropchart = function() {
 
                      reader.onload = function(evt) {
                         var inData = Papa.parse(evt.target.result);
-                        console.log(inData);
+                        // console.log(inData.data);
+                        inData.values = inData.data;
                         var options = defaultOptions;
                         // var googleChartData = google.visualization.arrayToDataTable($.parseJSON(chartData));
-                        if (inData['options']) {
-                            for (var k in inData['options']) {
-                              options[k] = inData['options'][k];
+                        if (inData['data']) {
+                            // console.log("in the data");
+                            for (var k in inData['data']) {
+                              options[k] = inData['data'][k];
                             }
                         }
-                        drawOne($('#'+chartId)[0], options, "SteppedAreaChart", inData['values']);
+
+
+                        drawCSV($('#'+chartId)[0], options, "SteppedAreaChart", inData['options']);
                     }
 
 
