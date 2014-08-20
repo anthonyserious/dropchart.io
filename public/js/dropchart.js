@@ -41,19 +41,9 @@ var dropchart = function() {
               packages:["corechart"],
               callback: function () {
                 for (var i = 0; i < chartInputs.length; i++) {
-                  elem.append(
-                    '<div class="row">'
-                    +'<div class="col-md-1">&nbsp;</div>'
-                    + '<div class="col-md-10" align="center">'
-                    +   '<div id="chartDiv'+i+'" class="chartDiv drop-shadow"></div>'
-                    + '</div>'
-                    +'<div class="col-md-1">&nbsp;</div>'
-                    +'</div>');
                   var chartData = google.visualization.arrayToDataTable(chartInputs[i].values);
                   var func;
-                  console.log(chartInputs[i].options);
                   if (chartInputs[i].options.chartType) {// && chartTypes[chartInputs[i].options.chartType]) {
-                    console.log("yes");
                     func = google.visualization[chartInputs[i].options.chartType];
                   } else{
                     func = google.visualization["SteppedAreaChart"];
@@ -99,6 +89,14 @@ var dropchart = function() {
       }
       var obj = {options: newOptions, values: inData['values']};
       chartInputs.push(obj);
+      chartParent.append(
+        '<div class="row">'
+        +'<div class="col-md-1">&nbsp;</div>'
+        + '<div class="col-md-10" align="center">'
+        +   '<div id="chartDiv'+[chartInputs.length-1]+'" class="chartDiv drop-shadow"></div>'
+        + '</div>'
+        +'<div class="col-md-1">&nbsp;</div>'
+        +'</div>');
       deferred.resolve(evt.target.result);
     }
  
