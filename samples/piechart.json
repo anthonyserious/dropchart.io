@@ -1,4 +1,4 @@
-{"options":{"title":"Life"},"values":[
+{"options":{"title":"Life","chartType":"PieChart"},"values":[
 ["action", "hours per day"],
 ["sleep", 8],
 ["not sleep", 16]
