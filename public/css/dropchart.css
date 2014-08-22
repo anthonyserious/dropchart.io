@@ -83,6 +83,10 @@ body {
   background-color: #ddd
 }
 
+.draggingData {
+  background-color: #eee;
+}
+
 .drop-shadow {
   -webkit-box-shadow: 0 0 15px 2px rgba(0, 0, 0, .5);
   box-shadow: 0 0 15px 2px rgba(0, 0, 0, .5);

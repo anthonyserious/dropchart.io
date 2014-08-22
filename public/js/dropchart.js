@@ -114,13 +114,22 @@ var dropchart = function() {
           evt.stopPropagation();
       });
       dropArea.on('dragenter', function(evt) {
-          evt.preventDefault();
-          evt.stopPropagation();
+        console.log("dragenter");
+        evt.preventDefault();
+        evt.stopPropagation();
+        $("body").toggleClass('draggingData');
+      });
+      dropArea.on('dragleave', function(evt) {
+        console.log("dragexit");
+        evt.preventDefault();
+        evt.stopPropagation();
+        $("body").toggleClass('draggingData');
       });
 
       dropArea.on('drop', function(evt){
         evt.preventDefault();
         evt.stopPropagation();
+        $("body").toggleClass('draggingData');
         var chartChildren = chartParent.children();
         if (chartChildren) { chartChildren.remove(); }
         chartInputs = [];
