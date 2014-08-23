@@ -42,7 +42,7 @@ var dropchart = function() {
               callback: function () {
                 for (var i = 0; i < chartInputs.length; i++) {
                   if (chartInputs[i]['status']) {
-                    $('#chartDiv'+i).text("Status: "+chartInputs[i]['status']+", message: "+chartInputs[i].message);
+                    $('#chartDiv'+i).html("<p><b>Filename: </b>"+chartInputs[i].filename+"</p><p><b>Status: </b>"+chartInputs[i]['status']+"</p><p><b>Message: </b>"+chartInputs[i].message+"</p>");
                   } else {
                     var chartData = google.visualization.arrayToDataTable(chartInputs[i].values);
                     var func;
@@ -83,7 +83,7 @@ var dropchart = function() {
         try { 
           inData = JSON.parse(evt.target.result);
         } catch(e) { 
-          obj = {status: "syntax error", message: e };
+          obj = {filename: file.name, status: "syntax error", message: e };
         }
         
         if (!obj['status']) {
