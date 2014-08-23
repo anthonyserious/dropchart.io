@@ -75,34 +75,67 @@ var dropchart = function() {
     };
 
     reader.onload = function(evt) {
-      var inData = JSON.parse(evt.target.result);
+
+      var obj = {};
+      var inData = {};
+      var file_type = file.name.split('.').pop();
+
+      if ( file_type === "json") {
+
+
+
+        try { 
+          inData = JSON.parse(evt.target.result);
+
+        } catch(e) {
+
+          obj = {status: "syntax error",
+          message: e
+        };
+      }
+
+
+
       var newOptions = {};
 
-      // merge default and custom options
-      for (var k in defaultOptions) {
-        newOptions[k] = defaultOptions[k];
-      }
-      if (inData['options']) {
-        for (var k in inData['options']) {
-          newOptions[k] = inData['options'][k];
+        // merge default and custom options
+        for (var k in defaultOptions) {
+          newOptions[k] = defaultOptions[k];
         }
+        if (inData['options']) {
+          for (var k in inData['options']) {
+            newOptions[k] = inData['options'][k];
+          }
+        } 
+
+
+
+      };
+
+
+
+      if (obj.status !== undefined) {
+        obj = {options: newOptions, values: inData['values']};
+
+        chartInputs.push(obj);
+        chartParent.append(
+          '<div class="row">'
+          +'<div class="col-md-1">&nbsp;</div>'
+          + '<div class="col-md-10" align="center">'
+          +   '<div id="chartDiv'+[chartInputs.length-1]+'" class="chartDiv drop-shadow"></div>'
+          + '</div>'
+          +'<div class="col-md-1">&nbsp;</div>'
+          +'</div>');
+        deferred.resolve(evt.target.result);
       }
-      var obj = {options: newOptions, values: inData['values']};
-      chartInputs.push(obj);
-      chartParent.append(
-        '<div class="row">'
-        +'<div class="col-md-1">&nbsp;</div>'
-        + '<div class="col-md-10" align="center">'
-        +   '<div id="chartDiv'+[chartInputs.length-1]+'" class="chartDiv drop-shadow"></div>'
-        + '</div>'
-        +'<div class="col-md-1">&nbsp;</div>'
-        +'</div>');
-      deferred.resolve(evt.target.result);
+
     }
- 
+
     reader.readAsText(file);
     return deferred.promise();
-  } // readFile()
+    } // readFile()
+
+
 
   return {
     init:function(inDropArea, inChartParent)  {
