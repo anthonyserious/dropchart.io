@@ -41,19 +41,23 @@ var dropchart = function() {
               packages:["corechart"],
               callback: function () {
                 for (var i = 0; i < chartInputs.length; i++) {
-                  var chartData = google.visualization.arrayToDataTable(chartInputs[i].values);
-                  var func;
-                  if (chartInputs[i].options.chartType) {// && chartTypes[chartInputs[i].options.chartType]) {
-                    func = google.visualization[chartInputs[i].options.chartType];
-                  } else{
-                    func = google.visualization["SteppedAreaChart"];
+                  if (chartInputs[i]['status']) {
+                    $('#chartDiv'+i).text("Status: "+chartInputs[i]['status']+", message: "+chartInputs[i].message);
+                  } else {
+                    var chartData = google.visualization.arrayToDataTable(chartInputs[i].values);
+                    var func;
+                    if (chartInputs[i].options.chartType) {// && chartTypes[chartInputs[i].options.chartType]) {
+                      func = google.visualization[chartInputs[i].options.chartType];
+                    } else{
+                      func = google.visualization["SteppedAreaChart"];
+                    }
+                    var chart = new func(document.getElementById("chartDiv"+i));
+                    //google.visualization.events.addListener(chart, 'ready', function () {
+                      //elem.innerHTML = '<img src="' + chart.getImageURI() + '">';
+                      //console.log(elem.innerHTML);
+                    //});
+                    chart.draw(chartData, chartInputs[i].options);
                   }
-                  var chart = new func(document.getElementById("chartDiv"+i));
-                  //google.visualization.events.addListener(chart, 'ready', function () {
-                    //elem.innerHTML = '<img src="' + chart.getImageURI() + '">';
-                    //console.log(elem.innerHTML);
-                  //});
-                  chart.draw(chartData, chartInputs[i].options);
                 }
               }
           }
@@ -66,69 +70,50 @@ var dropchart = function() {
     var reader = new FileReader();
     var deferred = $.Deferred();
  
-    reader.onload = function(evt) {
-        deferred.resolve(evt.target.result);
-    };
- 
     reader.onerror = function() {
         deferred.reject(this);
     };
 
     reader.onload = function(evt) {
-
       var obj = {};
       var inData = {};
       var file_type = file.name.split('.').pop();
 
-      if ( file_type === "json") {
-
-
-
+      if (file_type === "json") {
         try { 
           inData = JSON.parse(evt.target.result);
-
-        } catch(e) {
-
-          obj = {status: "syntax error",
-          message: e
-        };
-      }
-
-
-
-      var newOptions = {};
-
-        // merge default and custom options
-        for (var k in defaultOptions) {
-          newOptions[k] = defaultOptions[k];
+        } catch(e) { 
+          obj = {status: "syntax error", message: e };
         }
-        if (inData['options']) {
-          for (var k in inData['options']) {
-            newOptions[k] = inData['options'][k];
+        
+        if (!obj['status']) {
+
+          var newOptions = {};
+          // merge default and custom options
+          for (var k in defaultOptions) {
+            newOptions[k] = defaultOptions[k];
           }
-        } 
-
-
-
+          if (inData['options']) {
+            for (var k in inData['options']) {
+              newOptions[k] = inData['options'][k];
+            }
+          } 
+          obj = {options: newOptions, values: inData['values']};
+        }
       };
 
+            
+      chartInputs.push(obj);
+      chartParent.append(
+        '<div class="row">'
+        +'<div class="col-md-1">&nbsp;</div>'
+        + '<div class="col-md-10" align="center">'
+        +   '<div id="chartDiv'+[chartInputs.length-1]+'" class="chartDiv drop-shadow"></div>'
+        + '</div>'
+        +'<div class="col-md-1">&nbsp;</div>'
+        +'</div>');
 
-
-      if (obj.status !== undefined) {
-        obj = {options: newOptions, values: inData['values']};
-
-        chartInputs.push(obj);
-        chartParent.append(
-          '<div class="row">'
-          +'<div class="col-md-1">&nbsp;</div>'
-          + '<div class="col-md-10" align="center">'
-          +   '<div id="chartDiv'+[chartInputs.length-1]+'" class="chartDiv drop-shadow"></div>'
-          + '</div>'
-          +'<div class="col-md-1">&nbsp;</div>'
-          +'</div>');
-        deferred.resolve(evt.target.result);
-      }
-
+      deferred.resolve(evt.target.result);
     }
 
     reader.readAsText(file);
@@ -147,13 +132,11 @@ var dropchart = function() {
           evt.stopPropagation();
       });
       dropArea.on('dragenter', function(evt) {
-        console.log("dragenter");
         evt.preventDefault();
         evt.stopPropagation();
         $("body").toggleClass('draggingData');
       });
       dropArea.on('dragleave', function(evt) {
-        console.log("dragexit");
         evt.preventDefault();
         evt.stopPropagation();
         $("body").toggleClass('draggingData');
