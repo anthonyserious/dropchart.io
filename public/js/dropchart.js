@@ -86,8 +86,8 @@ var dropchart = function() {
           obj = {filename: file.name, status: "syntax error", message: e };
         }
         
-        if (!obj['status']) {
-
+        // if (!obj['status']) {
+        if (obj.hasOwnProperty('status') === false) {
           var newOptions = {};
           // merge default and custom options
           for (var k in defaultOptions) {
