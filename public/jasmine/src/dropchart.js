@@ -1,5 +1,9 @@
 "use strict"
 
+function helloWorld() {
+    return "Hello world!";
+}
+
 var dropchart = function() {
   var dropArea;
   var chartParent;
@@ -34,21 +38,6 @@ var dropchart = function() {
     "SteppedAreaChart"
   ];
 
-
-// Get a local file upload working
-
-  function handleFileSelect(evt) {
-    var files = evt.target.files; // FileList object
-    // // files is a FileList of File objects. List some properties.
-    var output = [];
-    for (var i = 0, f; f = files[i]; i++) {
-      readFile(f);
-    }
-  }
-
-  document.getElementById('files').addEventListener('change', handleFileSelect, false);
-
-
   // build a single chart
   function drawAll(elem) {
     if(google) {
@@ -82,7 +71,6 @@ var dropchart = function() {
 
   // When files are dropped, process them asynchronously and store the inputs in chartInputs[]
   function readFile(file) {
-    console.log(file);
     var reader = new FileReader();
     var deferred = $.Deferred();
  

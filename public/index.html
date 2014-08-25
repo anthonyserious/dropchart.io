@@ -11,6 +11,7 @@
     <title>dropchart.io</title>
 
     <link type="text/css" rel="stylesheet" href="/css/dropchart.css">
+
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -24,21 +25,32 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+
   </head>
   <body>
     <div class="container" align="center">
       <div><p></div>
       <div class="jumbotron">
+        
         <div>
           <h1>dropchart.io</h1>
-          <p>
+          <p class="desktop-main">
           <!--<div id="dropArea" class="drop"></div>--><!--<i>need input</i></div>-->
           <i>Drop your CSV or JSON files anywhere on the page to generate some very pretty charts.</i>
-          <p>
+          </p>
+
+          <p class="mobile-main">
+            <input type="file" id="files" name="files[]" multiple />
+            <output id="list"></output>
+            <i>Click the button to select a CSV or JSON file which will then generate a pretty chart.</i>
+          </p>
+
           <!--<button id="btnSave" class="btn btn-lg btn-default"><span class="glyphicon glyphicon-save"></span></button>-->
           <button id="btnAbout" class="btn btn btn-default" data-toggle="modal" data-target="#modalAbout">Help</button>
           <button id="btnHelp" class="btn btn btn-default" data-toggle="modal" data-target="#modalHelp">About</button>
         </div>
+      
       </div><!-- // jumbotron -->
     </div><!-- // container -->
 
