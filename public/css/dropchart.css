@@ -49,18 +49,17 @@
 
 
 
-h1 {
-  font-family: 'Gloria Hallelujah', cursive !important;
-  color: #993350 !important
+#dropchart-title-h1 {
+  font-family: 'Gloria Hallelujah', cursive;
+  color: #993350
 }
  
 .jumbotron {
-    background: transparent !important
+    background: transparent;
 }
 
-
 body { 
-    font-family: 'Droid Serif', serif;
+    /* font-family: 'Droid Serif', serif; */
     /* background-color: #5B957D !important */
 }
 
@@ -71,11 +70,11 @@ body {
     border:3px dashed #420013;
     border-radius: 15px;
     text-align:center;
-    vertical-align: center;
+    vertical-align: middle;
 }
 
 .chartDiv {
-    height: 350px !important;
+    height: 350px;
 }
 
 .drop:hover{
@@ -87,10 +86,39 @@ body {
   background-color: #eee;
 }
 
+.dropBtnDiv {
+    vertical-align: middle;
+}
+
 .drop-shadow {
   -webkit-box-shadow: 0 0 15px 2px rgba(0, 0, 0, .5);
   box-shadow: 0 0 15px 2px rgba(0, 0, 0, .5);
   border-radius:5px;
   margin: 25px;
+}
+
+/* This should be around line 4713 in your bootstrap.css */
+.navbar-collapse.collapse {
+  text-align: center; /* Set this */
+  padding-bottom: 0;
+}
+
+/* This should be around line 4866 in your bootstrap.css */
+.navbar-nav {
+  display:inline-block;
+  float: none;
+  font-size: 18px;
+  color:  #993350
+
+}
+
+.active {
+    text-decoration: underline
+}
+
+.dc-btn {
+  border-color: #ffffff;
+  color: #ffffff;
+  background-color: #5b957e;
 }
 
