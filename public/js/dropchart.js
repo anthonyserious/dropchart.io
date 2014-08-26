@@ -42,8 +42,15 @@ var dropchart = function() {
     // // files is a FileList of File objects. List some properties.
     var output = [];
     for (var i = 0, f; f = files[i]; i++) {
+    //   output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+    //               f.size, ' bytes, last modified: ',
+    //               f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+    //               '</li>');
+      $('.mobile-main').hide();
+      $('.desktop-main').show();
       readFile(f);
     }
+    // document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
   }
 
   document.getElementById('files').addEventListener('change', handleFileSelect, false);
@@ -82,7 +89,7 @@ var dropchart = function() {
 
   // When files are dropped, process them asynchronously and store the inputs in chartInputs[]
   function readFile(file) {
-    console.log(file);
+    debugger;
     var reader = new FileReader();
     var deferred = $.Deferred();
  

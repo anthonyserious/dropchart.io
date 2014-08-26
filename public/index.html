@@ -33,19 +33,24 @@
       <div><p></div>
       <div class="jumbotron">
         
-        <div>
+        <div class="desktop-main">
           <h1>dropchart.io</h1>
-          <p class="desktop-main">
+          <p>
           <!--<div id="dropArea" class="drop"></div>--><!--<i>need input</i></div>-->
           <i>Drop your CSV or JSON files anywhere on the page to generate some very pretty charts.</i>
-          </p>
+          <p>
+          <!--<button id="btnSave" class="btn btn-lg btn-default"><span class="glyphicon glyphicon-save"></span></button>-->
+          <button id="btnAbout" class="btn btn btn-default" data-toggle="modal" data-target="#modalAbout">Help</button>
+          <button id="btnHelp" class="btn btn btn-default" data-toggle="modal" data-target="#modalHelp">About</button>
+        </div>
 
-          <p class="mobile-main">
+        <div class="mobile-main">
+          <h1>dropchart.io</h1>
+          <p>
             <input type="file" id="files" name="files[]" multiple />
             <output id="list"></output>
             <i>Click the button to select a CSV or JSON file which will then generate a pretty chart.</i>
-          </p>
-
+          <p>
           <!--<button id="btnSave" class="btn btn-lg btn-default"><span class="glyphicon glyphicon-save"></span></button>-->
           <button id="btnAbout" class="btn btn btn-default" data-toggle="modal" data-target="#modalAbout">Help</button>
           <button id="btnHelp" class="btn btn btn-default" data-toggle="modal" data-target="#modalHelp">About</button>
