@@ -154,8 +154,8 @@ var dropchart = function() {
       chartParent.append(
         '<div class="row">'
         +'<div class="col-md-1 dropBtnDiv">'
-        +'<button type="button" class="btn btn-default btn dc-btn"><span class="glyphicon glyphicon-floppy-save"></span></button>'
-        +'<button type="button" class="btn btn-default btn dc-btn"><span class="glyphicon glyphicon-eject"></span></button>'
+        //+'<button type="button" class="btn btn-default btn dc-btn"><span class="glyphicon glyphicon-floppy-save"></span></button>'
+        //+'<button type="button" class="btn btn-default btn dc-btn"><span class="glyphicon glyphicon-eject"></span></button>'
         +'&nbsp;</div>'
         + '<div class="col-md-10" align="center">'
         +   '<div id="chartDiv'+[chartInputs.length-1]+'" class="chartDiv drop-shadow"></div>'
