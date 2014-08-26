@@ -77,10 +77,11 @@ var dropchart = function() {
                       func = google.visualization["SteppedAreaChart"];
                     }
                     var chart = new func(document.getElementById("chartDiv"+i));
-                    //google.visualization.events.addListener(chart, 'ready', function () {
+                    google.visualization.events.addListener(chart, 'ready', function () {
                       //elem.innerHTML = '<img src="' + chart.getImageURI() + '">';
+                      $('#chartDivPng'+i).attr('href', chart.getImageURI());
                       //console.log(elem.innerHTML);
-                    //});
+                    });
                     chart.draw(chartData, chartInputs[i].options);
                   }
                 }
@@ -155,10 +156,10 @@ var dropchart = function() {
         '<div class="row">'
         +'<div class="col-md-1 dropBtnDiv">'
         //+'<button type="button" class="btn btn-default btn dc-btn"><span class="glyphicon glyphicon-floppy-save"></span></button>'
-        //+'<button type="button" class="btn btn-default btn dc-btn"><span class="glyphicon glyphicon-eject"></span></button>'
+        +'<a type="button" target="top" class="btn btn-default btn dc-btn" id="chartDivPng'+(chartInputs.length-1)+'"><span class="glyphicon glyphicon-eject"></span></a>'
         +'&nbsp;</div>'
         + '<div class="col-md-10" align="center">'
-        +   '<div id="chartDiv'+[chartInputs.length-1]+'" class="chartDiv drop-shadow"></div>'
+        +   '<div id="chartDiv'+(chartInputs.length-1)+'" class="chartDiv drop-shadow"></div>'
         + '</div>'
         +'<div class="col-md-1">&nbsp;</div>'
         +'</div>');
