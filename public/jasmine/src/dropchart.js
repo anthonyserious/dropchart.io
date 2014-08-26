@@ -1,5 +1,9 @@
 "use strict"
 
+function helloWorld() {
+    return "Hello world!";
+}
+
 var dropchart = function() {
   var dropArea;
   var chartParent;
@@ -12,16 +16,6 @@ var dropchart = function() {
 
   var defaultOptions = {
     title: "Untitled",
-    titleTextStyle:{
-		fontName:"Trebuchet MS, Helvetica, sans-serif",
-		fontSize:"24",
-	},
-	legend:{
-		textStyle:{
-			"fontName":"lucida console",
-			"fontSize":"18"
-		}	
-	},
     colors: colorSchemes.first,
     backgroundColor: {
       stroke: '#055333',
@@ -43,21 +37,6 @@ var dropchart = function() {
     "ScatterChart",
     "SteppedAreaChart"
   ];
-
-
-// Get a local file upload working
-
-  function handleFileSelect(evt) {
-    var files = evt.target.files; // FileList object
-    // // files is a FileList of File objects. List some properties.
-    var output = [];
-    for (var i = 0, f; f = files[i]; i++) {
-      readFile(f);
-    }
-  }
-
-  document.getElementById('files').addEventListener('change', handleFileSelect, false);
-
 
   // build a single chart
   function drawAll(elem) {
@@ -92,7 +71,6 @@ var dropchart = function() {
 
   // When files are dropped, process them asynchronously and store the inputs in chartInputs[]
   function readFile(file) {
-    console.log(file);
     var reader = new FileReader();
     var deferred = $.Deferred();
  
@@ -103,7 +81,7 @@ var dropchart = function() {
     reader.onload = function(evt) {
       var obj = {};
       var inData = {};
-      var file_type = file.name.split('.').pop().toLowerCase();
+      var file_type = file.name.split('.').pop();
 
       if (file_type === "json") {
         try { 
@@ -119,8 +97,6 @@ var dropchart = function() {
           for (var k in defaultOptions) {
             newOptions[k] = defaultOptions[k];
           }
-          // automatically set the chart title to be the filename (minus extension)
-          newOptions.title = file.name.split('.')[0];
           if (inData['options']) {
             for (var k in inData['options']) {
               newOptions[k] = inData['options'][k];
@@ -128,35 +104,13 @@ var dropchart = function() {
           } 
           obj = {options: newOptions, values: inData['values']};
         }
-      } else { // Just assume that the default is CSV.  if (file_type === "csv") {
-        var newOptions = {};
-        for (var k in defaultOptions) {
-          newOptions[k] = defaultOptions[k];
-        }
-        // automatically set the chart title to be the filename (minus extension)
-        newOptions.title = file.name.split('.')[0];
-        inData = Papa.parse(evt.target.result, {dynamicTyping:true});
-
-        // If first line starts with a number, then assume that there's no X-axis series labels.  Autopopulate them here.
-        if (inData.data.length > 1 && typeof inData.data[1][0] === "number") {
-          var arrayLength = inData.data[0].length;
-          inData.data[0].unshift("Series");
-          for (var i = 1; i < inData.data.length; i++) {
-
-            inData.data[i].unshift(i.toString());
-          }
-        }
-        obj = {options: newOptions, values: inData.data};
-      }
+      };
 
             
       chartInputs.push(obj);
       chartParent.append(
         '<div class="row">'
-        +'<div class="col-md-1 dropBtnDiv">'
-        +'<button type="button" class="btn btn-default btn dc-btn"><span class="glyphicon glyphicon-floppy-save"></span></button>'
-        +'<button type="button" class="btn btn-default btn dc-btn"><span class="glyphicon glyphicon-eject"></span></button>'
-        +'&nbsp;</div>'
+        +'<div class="col-md-1">&nbsp;</div>'
         + '<div class="col-md-10" align="center">'
         +   '<div id="chartDiv'+[chartInputs.length-1]+'" class="chartDiv drop-shadow"></div>'
         + '</div>'
@@ -168,7 +122,7 @@ var dropchart = function() {
 
     reader.readAsText(file);
     return deferred.promise();
-  } // readFile()
+    } // readFile()
 
 
 

@@ -97,6 +97,7 @@ body {
   margin: 25px;
 }
 
+<<<<<<< HEAD
 /* This should be around line 4713 in your bootstrap.css */
 .navbar-collapse.collapse {
   text-align: center; /* Set this */
@@ -120,5 +121,17 @@ body {
   border-color: #ffffff;
   color: #ffffff;
   background-color: #5b957e;
+}
+
+@media (max-width:500px){
+  .desktop-main {
+    display: none;
+  }
+}
+
+@media (min-width:501px){
+  .mobile-main{
+    display: none;
+  }
 }
 
