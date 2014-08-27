@@ -3,7 +3,34 @@
 var dropchart = function() {
   var dropArea;
   var chartParent;
-  var chartInputs = [];
+
+  // Inputs object.  Operations wrapping chart input/img tuples.
+  var chartInputs = function() {
+    var inputs;
+    return {
+      init: function() {
+        inputs = [];
+      },
+      reset: function() {
+        inputs = [];
+      },
+      addInput: function(f) {
+        inputs.push({input: f, img: ""});
+      },
+      getInput: function(n) {
+        return inputs[n].input;
+      },
+      setImg: function(n, s) {
+        inputs[n].img = s;
+      },
+      getImg: function(n) {
+        return inputs[n].img;
+      },
+      getLength: function() {
+        return inputs.length;
+      }
+    }
+  }();
 
   var colorSchemes = {
     none: [],
@@ -13,15 +40,15 @@ var dropchart = function() {
   var defaultOptions = {
     title: "Untitled",
     titleTextStyle:{
-		fontName:"Trebuchet MS, Helvetica, sans-serif",
-		fontSize:"24",
-	},
-	legend:{
-		textStyle:{
-			"fontName":"lucida console",
-			"fontSize":"18"
-		}	
-	},
+      fontName:"Trebuchet MS, Helvetica, sans-serif",
+      fontSize:"24",
+    },
+    legend:{
+      textStyle:{
+        "fontName":"lucida console",
+        "fontSize":"18"
+      }	
+    },
     colors: colorSchemes.first,
     backgroundColor: {
       stroke: '#055333',
@@ -65,24 +92,23 @@ var dropchart = function() {
       google.load("visualization", "1.0", {
               packages:["corechart"],
               callback: function () {
-                for (var i = 0; i < chartInputs.length; i++) {
-                  if (chartInputs[i]['status']) {
-                    $('#chartDiv'+i).html("<p><b>Filename: </b>"+chartInputs[i].filename+"</p><p><b>Status: </b>"+chartInputs[i]['status']+"</p><p><b>Message: </b>"+chartInputs[i].message+"</p>");
+                for (var i = 0; i < chartInputs.getLength(); i++) {
+                  var input = chartInputs.getInput(i);
+                  if (input['status']) {
+                    $('#chartDiv'+i).html("<p><b>Filename: </b>"+input.filename+"</p><p><b>Status: </b>"+input['status']+"</p><p><b>Message: </b>"+input.message+"</p>");
                   } else {
-                    var chartData = google.visualization.arrayToDataTable(chartInputs[i].values);
+                    var chartData = google.visualization.arrayToDataTable(input.values);
                     var func;
-                    if (chartInputs[i].options.chartType) {// && chartTypes[chartInputs[i].options.chartType]) {
-                      func = google.visualization[chartInputs[i].options.chartType];
+                    if (input.options.chartType) {// && chartTypes[chartInputs[i].options.chartType]) {
+                      func = google.visualization[input.options.chartType];
                     } else{
                       func = google.visualization["SteppedAreaChart"];
                     }
                     var chart = new func(document.getElementById("chartDiv"+i));
                     google.visualization.events.addListener(chart, 'ready', function () {
-                      //elem.innerHTML = '<img src="' + chart.getImageURI() + '">';
-                      $('#chartDivPng'+i).attr('href', chart.getImageURI());
-                      //console.log(elem.innerHTML);
+                      chartInputs.setImg(i, chart.getImageURI());
                     });
-                    chart.draw(chartData, chartInputs[i].options);
+                    chart.draw(chartData, input.options);
                   }
                 }
               }
@@ -91,9 +117,9 @@ var dropchart = function() {
     }
   }
 
-  // When files are dropped, process them asynchronously and store the inputs in chartInputs[]
+  // When files are dropped, process them asynchronously and store the inputs in chartInputs
   function readFile(file) {
-    console.log(file);
+    //console.log(file);
     var reader = new FileReader();
     var deferred = $.Deferred();
  
@@ -151,19 +177,27 @@ var dropchart = function() {
       }
 
             
-      chartInputs.push(obj);
+      chartInputs.addInput(obj);
+      var len = chartInputs.getLength();
       chartParent.append(
         '<div class="row">'
         +'<div class="col-md-1 dropBtnDiv">'
         //+'<button type="button" class="btn btn-default btn dc-btn"><span class="glyphicon glyphicon-floppy-save"></span></button>'
-        +'<a type="button" target="top" class="btn btn-default btn dc-btn" id="chartDivPng'+(chartInputs.length-1)+'"><span class="glyphicon glyphicon-eject"></span></a>'
+        +'<a type="button" target="top" class="btn btn-default btn dc-btn" id="btnChartDivImg'+(len-1)+'"><span class="glyphicon glyphicon-eject"></span></a>'
         +'&nbsp;</div>'
         + '<div class="col-md-10" align="center">'
-        +   '<div id="chartDiv'+(chartInputs.length-1)+'" class="chartDiv drop-shadow"></div>'
+        +   '<div id="chartDiv'+(len-1)+'" class="chartDiv drop-shadow"></div>'
         + '</div>'
         +'<div class="col-md-1">&nbsp;</div>'
         +'</div>');
+      $('#btnChartDivImg'+(len-1)).click(function(){
+        var c = $('#imgDiv').children();
+        if (c) { c.remove(); }
+        $('#imgDiv').append("<img src='"+ chartInputs.getImg(len-1)+"'>");
 
+        $('#modalImg').modal();
+        
+      });
       deferred.resolve(evt.target.result);
     }
 
@@ -177,7 +211,12 @@ var dropchart = function() {
     init:function(inDropArea, inChartParent)  {
       dropArea = inDropArea;
       chartParent = inChartParent;
+      chartInputs.init();
 
+      dropArea.on('dragstart', function(evt) {
+          evt.preventDefault();
+          evt.stopPropagation();
+      });
       dropArea.on('dragover', function(evt) {
           evt.preventDefault();
           evt.stopPropagation();
@@ -199,7 +238,7 @@ var dropchart = function() {
         $("body").toggleClass('draggingData');
         var chartChildren = chartParent.children();
         if (chartChildren) { chartChildren.remove(); }
-        chartInputs = [];
+        chartInputs.reset();
 
         var promises = [];
         if(evt.originalEvent.dataTransfer){

@@ -73,6 +73,12 @@ body {
     vertical-align: middle;
 }
 
+.dcModal {
+    /* recenter based on std 600px modal width:  (600 - NewWidth) / 2 */
+    margin-left: -212px;
+    width: 1024px;
+}
+
 .chartDiv {
     height: 350px;
 }
