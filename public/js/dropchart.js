@@ -183,13 +183,14 @@ var dropchart = function() {
         '<div class="row">'
         +'<div class="col-md-1 dropBtnDiv">'
         //+'<button type="button" class="btn btn-default btn dc-btn"><span class="glyphicon glyphicon-floppy-save"></span></button>'
-        +'<a type="button" target="top" class="btn btn-default btn dc-btn" id="btnChartDivImg'+(len-1)+'"><span class="glyphicon glyphicon-eject"></span></a>'
+        +'<button type="button" class="btn btn-default btn-lg dc-btn" id="btnChartDivImg'+(len-1)+'" data-toggle="tooltip" data-placement="bottom" title="Generate PNG image from chart."><span class="glyphicon glyphicon-download-alt"></span></button>'
         +'&nbsp;</div>'
         + '<div class="col-md-10" align="center">'
         +   '<div id="chartDiv'+(len-1)+'" class="chartDiv drop-shadow"></div>'
         + '</div>'
         +'<div class="col-md-1">&nbsp;</div>'
         +'</div>');
+      $('#btnChartDivImg'+(len-1)).tooltip();
       $('#btnChartDivImg'+(len-1)).click(function(){
         var c = $('#imgDiv').children();
         if (c) { c.remove(); }
