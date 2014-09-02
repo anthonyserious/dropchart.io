@@ -47,7 +47,9 @@
 .rgba-secondary-2-3 { color: rgba(196,211,128,1) }
 .rgba-secondary-2-4 { color: rgba(242,247,218,1) }
 
-
+.ie-only {
+  display: none;
+}
 
 #dropchart-title-h1 {
   font-family: 'Gloria Hallelujah', cursive;
@@ -56,6 +58,10 @@
  
 .jumbotron {
     background: transparent;
+    margin-top: 15px;
+    border-radius: .5em 0em .5em 0px !important;
+    border-bottom: #993350 5px solid;
+    box-shadow: 10px 10px 5px #999999;
 }
 
 body { 

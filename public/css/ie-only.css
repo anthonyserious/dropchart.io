@@ -1,0 +1,11 @@
+.ie-only { 
+  display: block; 
+}
+
+.ie-only p {
+  font-size: 4em;
+}
+
+div:not(.ie-only){
+  display: none;
+}
