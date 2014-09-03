@@ -46,8 +46,9 @@ var dropchart = function() {
     legend:{
       textStyle:{
         "fontName":"lucida console",
-        "fontSize":"18"
-      }	
+        "fontSize":"12"
+      },
+      position:"bottom"
     },
     colors: colorSchemes.first,
     backgroundColor: {
@@ -71,19 +72,6 @@ var dropchart = function() {
     "SteppedAreaChart"
   ];
 
-
-// Get a local file upload working
-
-  function handleFileSelect(evt) {
-    var files = evt.target.files; // FileList object
-    // // files is a FileList of File objects. List some properties.
-    var output = [];
-    for (var i = 0, f; f = files[i]; i++) {
-      readFile(f);
-    }
-  }
-
-  document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
 
   // build a single chart
@@ -117,17 +105,15 @@ var dropchart = function() {
     }
   }
 
+
+
   // When files are dropped, process them asynchronously and store the inputs in chartInputs
   function readFile(file) {
     //console.log(file);
     var reader = new FileReader();
     var deferred = $.Deferred();
  
-    reader.onerror = function() {
-        deferred.reject(this);
-    };
-
-    reader.onload = function(evt) {
+    function readerOnLoadEventHandler(evt) {
       var obj = {};
       var inData = {};
       var file_type = file.name.split('.').pop().toLowerCase();
@@ -200,7 +186,13 @@ var dropchart = function() {
         
       });
       deferred.resolve(evt.target.result);
-    }
+    } // fileEventHandler
+
+    reader.onerror = function() {
+        deferred.reject(this);
+    };
+
+    reader.onload = readerOnLoadEventHandler;
 
     reader.readAsText(file);
     return deferred.promise();
@@ -213,27 +205,22 @@ var dropchart = function() {
       dropArea = inDropArea;
       chartParent = inChartParent;
       chartInputs.init();
+      
+      // handle "change" event on the "inputFiles" input field for mobile devices
+      function inputFilesHandler(evt) {
+        var files = evt.target.files;
+        var promises = [];
+        chartInputs.reset();
 
-      dropArea.on('dragstart', function(evt) {
-          evt.preventDefault();
-          evt.stopPropagation();
-      });
-      dropArea.on('dragover', function(evt) {
-          evt.preventDefault();
-          evt.stopPropagation();
-      });
-      dropArea.on('dragenter', function(evt) {
-        evt.preventDefault();
-        evt.stopPropagation();
-        $("body").toggleClass('draggingData');
-      });
-      dropArea.on('dragleave', function(evt) {
-        evt.preventDefault();
-        evt.stopPropagation();
-        $("body").toggleClass('draggingData');
-      });
+        for (var i = 0, f; f = files[i]; i++) {
+          promises[i] = readFile(f);
+        }
+        $.when.apply($, promises).done(function() {
+          drawAll(chartParent);
+        });
+      }
 
-      dropArea.on('drop', function(evt){
+      function dropAreaDropHandler(evt){
         evt.preventDefault();
         evt.stopPropagation();
         $("body").toggleClass('draggingData');
@@ -251,7 +238,34 @@ var dropchart = function() {
             drawAll(chartParent);
           });
         }
-      }); // on('drop')
+      };
+
+
+      dropArea.on('dragstart', function(evt) {
+          evt.preventDefault();
+          evt.stopPropagation();
+      });
+
+      dropArea.on('dragover', function(evt) {
+          evt.preventDefault();
+          evt.stopPropagation();
+      });
+
+      dropArea.on('dragenter', function(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        $("body").toggleClass('draggingData');
+      });
+
+      dropArea.on('dragleave', function(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        $("body").toggleClass('draggingData');
+      });
+
+      dropArea.on('drop', dropAreaDropHandler);
+      document.getElementById('inputFiles').addEventListener('change', inputFilesHandler, false);
+
     } // init
   } // return
 
