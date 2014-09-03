@@ -6,7 +6,7 @@ var dropchart = function() {
 
   // Inputs object.  Operations wrapping chart input/img tuples.
   var chartInputs = function() {
-    var inputs;
+    var inputs = [];
     return {
       init: function() {
         inputs = [];
@@ -28,6 +28,11 @@ var dropchart = function() {
       },
       getLength: function() {
         return inputs.length;
+      },
+      sort: function() {
+        inputs.sort(function(a, b) {
+          return a.input.options.title.localeCompare(b.input.options.title);
+        });
       }
     }
   }();
@@ -72,8 +77,6 @@ var dropchart = function() {
     "SteppedAreaChart"
   ];
 
-
-
   // build a single chart
   function drawAll(elem) {
     if(google) {
@@ -105,8 +108,6 @@ var dropchart = function() {
     }
   }
 
-
-
   // When files are dropped, process them asynchronously and store the inputs in chartInputs
   function readFile(file) {
     //console.log(file);
@@ -122,10 +123,9 @@ var dropchart = function() {
         try { 
           inData = JSON.parse(evt.target.result);
         } catch(e) { 
-          obj = {filename: file.name, status: "syntax error", message: e };
+          obj = {filename: file.name, status: "syntax error", message: e, options:{title:file.name} };
         }
         
-        // if (!obj['status']) {
         if (obj.hasOwnProperty('status') === false) {
           var newOptions = {};
           // merge default and custom options
@@ -198,8 +198,6 @@ var dropchart = function() {
     return deferred.promise();
   } // readFile()
 
-
-
   return {
     init:function(inDropArea, inChartParent)  {
       dropArea = inDropArea;
@@ -216,6 +214,7 @@ var dropchart = function() {
           promises[i] = readFile(f);
         }
         $.when.apply($, promises).done(function() {
+          chartInputs.sort();
           drawAll(chartParent);
         });
       }
@@ -235,11 +234,11 @@ var dropchart = function() {
             promises[i] = readFile(file);
           }
           $.when.apply($, promises).done(function() {
+            chartInputs.sort();
             drawAll(chartParent);
           });
         }
-      };
-
+      }
 
       dropArea.on('dragstart', function(evt) {
           evt.preventDefault();
@@ -270,3 +269,4 @@ var dropchart = function() {
   } // return
 
 }();
+
