@@ -6,7 +6,7 @@ var dropchart = function() {
 
   // Inputs object.  Operations wrapping chart input/img tuples.
   var chartInputs = function() {
-    var inputs;
+    var inputs = [];
     return {
       init: function() {
         inputs = [];
@@ -28,6 +28,11 @@ var dropchart = function() {
       },
       getLength: function() {
         return inputs.length;
+      },
+      sort: function() {
+        inputs.sort(function(a, b) {
+          return a.input.options.title.localeCompare(b.input.options.title);
+        });
       }
     }
   }();
@@ -46,8 +51,9 @@ var dropchart = function() {
     legend:{
       textStyle:{
         "fontName":"lucida console",
-        "fontSize":"18"
-      }	
+        "fontSize":"12"
+      },
+      position:"bottom"
     },
     colors: colorSchemes.first,
     backgroundColor: {
@@ -70,21 +76,6 @@ var dropchart = function() {
     "ScatterChart",
     "SteppedAreaChart"
   ];
-
-
-// Get a local file upload working
-
-  function handleFileSelect(evt) {
-    var files = evt.target.files; // FileList object
-    // // files is a FileList of File objects. List some properties.
-    var output = [];
-    for (var i = 0, f; f = files[i]; i++) {
-      readFile(f);
-    }
-  }
-
-  document.getElementById('files').addEventListener('change', handleFileSelect, false);
-
 
   // build a single chart
   function drawAll(elem) {
@@ -124,11 +115,7 @@ var dropchart = function() {
     var reader = new FileReader();
     var deferred = $.Deferred();
  
-    reader.onerror = function() {
-        deferred.reject(this);
-    };
-
-    reader.onload = function(evt) {
+    function readerOnLoadEventHandler(evt) {
       var obj = {};
       var inData = {};
       var file_type = file.name.split('.').pop().toLowerCase();
@@ -137,10 +124,9 @@ var dropchart = function() {
         try { 
           inData = JSON.parse(evt.target.result);
         } catch(e) { 
-          obj = {filename: file.name, status: "syntax error", message: e };
+          obj = {filename: file.name, status: "syntax error", message: e, options:{title:file.name} };
         }
         
-        // if (!obj['status']) {
         if (obj.hasOwnProperty('status') === false) {
           var newOptions = {};
           // merge default and custom options
@@ -201,40 +187,40 @@ var dropchart = function() {
         
       });
       deferred.resolve(evt.target.result);
-    }
+    } // fileEventHandler
+
+    reader.onerror = function() {
+        deferred.reject(this);
+    };
+
+    reader.onload = readerOnLoadEventHandler;
 
     reader.readAsText(file);
     return deferred.promise();
   } // readFile()
-
-
 
   return {
     init:function(inDropArea, inChartParent)  {
       dropArea = inDropArea;
       chartParent = inChartParent;
       chartInputs.init();
+      
+      // handle "change" event on the "inputFiles" input field for mobile devices
+      function inputFilesHandler(evt) {
+        var files = evt.target.files;
+        var promises = [];
+        chartInputs.reset();
 
-      dropArea.on('dragstart', function(evt) {
-          evt.preventDefault();
-          evt.stopPropagation();
-      });
-      dropArea.on('dragover', function(evt) {
-          evt.preventDefault();
-          evt.stopPropagation();
-      });
-      dropArea.on('dragenter', function(evt) {
-        evt.preventDefault();
-        evt.stopPropagation();
-        $("body").toggleClass('draggingData');
-      });
-      dropArea.on('dragleave', function(evt) {
-        evt.preventDefault();
-        evt.stopPropagation();
-        $("body").toggleClass('draggingData');
-      });
+        for (var i = 0, f; f = files[i]; i++) {
+          promises[i] = readFile(f);
+        }
+        $.when.apply($, promises).done(function() {
+          chartInputs.sort();
+          drawAll(chartParent);
+        });
+      }
 
-      dropArea.on('drop', function(evt){
+      function dropAreaDropHandler(evt){
         evt.preventDefault();
         evt.stopPropagation();
         $("body").toggleClass('draggingData');
@@ -249,11 +235,39 @@ var dropchart = function() {
             promises[i] = readFile(file);
           }
           $.when.apply($, promises).done(function() {
+            chartInputs.sort();
             drawAll(chartParent);
           });
         }
-      }); // on('drop')
+      }
+
+      dropArea.on('dragstart', function(evt) {
+          evt.preventDefault();
+          evt.stopPropagation();
+      });
+
+      dropArea.on('dragover', function(evt) {
+          evt.preventDefault();
+          evt.stopPropagation();
+      });
+
+      dropArea.on('dragenter', function(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        $("body").toggleClass('draggingData');
+      });
+
+      dropArea.on('dragleave', function(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        $("body").toggleClass('draggingData');
+      });
+
+      dropArea.on('drop', dropAreaDropHandler);
+      document.getElementById('inputFiles').addEventListener('change', inputFilesHandler, false);
+
     } // init
   } // return
 
 }();
+
