@@ -69,9 +69,6 @@
 }
 
 #dropchart-title-h1 {
-  /*font-family: 'Gloria Hallelujah', cursive;*/
-  /*font-family: 'lucida console';*/
-  /*font-family: 'VT323';*/
   font-family: 'Fascinate', cursive;
   /*color: #993350*/
 }
@@ -83,9 +80,8 @@
 }
 
 body { 
-    /* font-family: 'Droid Serif', serif; */
   font-family: 'lucida console';
-    /* background-color: #5B957D !important */
+  /* background-color: #5B957D !important */
 }
 
 .drop {
