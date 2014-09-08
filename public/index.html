@@ -15,6 +15,8 @@
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <!--<link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>-->
+    <!--<link href='http://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>-->
+    <link href='http://fonts.googleapis.com/css?family=Fascinate' rel='stylesheet' type='text/css'>
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!--<script src="/js/ie10-viewport-bug-workaround.js"></script>-->
@@ -40,15 +42,16 @@
         <div>
           <h1 id="dropchart-title-h1">dropchart.io</h1>
           <p>
-          <p class="desktop-main">
-          Drop your CSV or JSON files anywhere on the page to generate some very pretty charts.
-          </p>
+          <div class="desktop-main">
+            <i>Drop your CSV or JSON files anywhere on the page to generate some very pretty charts.</i>
+          </div>
 
-          <p class="mobile-main">
-            <i>Click the button to select a CSV or JSON file which will then generate a pretty chart.</i>
+          <div class="mobile-main">
+            <i>Select your CSV or JSON files to generate some very pretty charts.</i>
+            <p>
             <input type="file" id="inputFiles" name="files[]" multiple />
-          </p>
-
+          </div>
+          <p>
           <a id="btnHelp" class="btn btn btn-default dc-btn" href="dropchart-io-samples.zip">Samples</a>
           <button id="btnHelp" class="btn btn btn-default dc-btn" data-toggle="modal" data-target="#modalHelp">Help</button>
           <button id="btnAbout" class="btn btn btn-default dc-btn" data-toggle="modal" data-target="#modalAbout">About</button>
