@@ -45,12 +45,17 @@
         <div class="mobile-main">
           <i>Select your CSV or JSON files to generate some very pretty charts.</i>
           <p><br>
-          <input type="file" id="inputFiles" name="files[]" multiple />
+          <span class="btn btn-default btn-file">
+            Browse <input id="inputFiles" name="files[]" multiple type="file">
+          </span>
+          <!--<input type="file" id="inputFiles" name="files[]" multiple />-->
         </div>
         <p><br>
-        <a id="btnHelp" class="btn btn btn-default dc-btn" href="dropchart-io-samples.zip">Samples</a>
-        <button id="btnHelp" class="btn btn btn-default dc-btn" data-toggle="modal" data-target="#modalHelp">Help</button>
-        <button id="btnAbout" class="btn btn btn-default dc-btn" data-toggle="modal" data-target="#modalAbout">About</button>
+        <div class="btn-group">
+          <a id="btnHelp" class="btn btn btn-default dc-btn" href="dropchart-io-samples.zip">Samples</a>
+          <button id="btnHelp" class="btn btn btn-default dc-btn" data-toggle="modal" data-target="#modalHelp">Help</button>
+          <button id="btnAbout" class="btn btn btn-default dc-btn" data-toggle="modal" data-target="#modalAbout">About</button>
+        </div>
       </div>
     </div><!-- // jumbotron -->
 
