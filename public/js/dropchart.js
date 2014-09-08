@@ -39,7 +39,8 @@ var dropchart = function() {
 
   var colorSchemes = {
     none: [],
-    first: ["#993350", "#055333", "#394600", "#90A437", "#277455"]
+    first: ["#993350", "#055333", "#394600", "#90A437", "#277455"],
+    second: ["#1A55DE", "#FFE404", "#FF5504", "#FFAB04", "#092D80", "#702400", "#704B00"]
   }
 
   var defaultOptions = {
@@ -55,7 +56,6 @@ var dropchart = function() {
       },
       position:"bottom"
     },
-    colors: colorSchemes.first,
     backgroundColor: {
       stroke: '#055333',
       strokeWidth: 0
