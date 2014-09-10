@@ -93,10 +93,10 @@
             <h4 class="modal-title" id="modalAboutLabel">About dropchart.io</h4>
           </div>
           <div class="modal-body">
-<h4>Who?</h4>
+<h4>Who</h4>
 <B>dropchart.io</b> was conceived and developed by <a href="https://www.linkedin.com/pub/anthony-schneider/9/72/70a">Anthony Schneider</a>, with assists from <a href="http://mattlucas.co">Matt Lucas</a>.
 
-<h4>Why?</h4>
+<h4>Why</h4>
 Because data visualization should be easy and accessible.  Sometimes you want to quickly render a pie chart breaking down presidential job approval ratings.  Maybe you don’t want to import your CSV data in Excel, highlight the columns you want, format it, etc.  Maybe you don’t even have Excel (or know what Google Docs is).  <b>dropchart.io</b> came about mostly because Anthony does a lot of performance engineering at his job, which means generating lots of numbers and trying to find (deep?) meaning in them.
 
 <h4>What’s the technology behind dropchart.io?</h4>
@@ -129,7 +129,83 @@ THE SOFTWARE.
             <h4 class="modal-title" id="modalHelpLabel">How does dropchart.io work?</h4>
           </div>
           <div class="modal-body">
-            To get some nice graphs, just drag and drop a .csv or .json file onto the drop zone and dropchart.io will render your charts for you.
+<h4>How do I use dropchart.io?</h4>
+It’s pretty easy.  Assuming that you are using a modern web browser (Chrome, Safari >= 6, Internet Explorer >= 10), then just drag and drop one or more files onto the dropchart.io page, and you’ll get some nice charts.
+
+<h4>What file formats are supported?</h4>
+dropchart.io supports files with CSV and JSON data.  There are several <a href="dropchart-io-samples.zip">samples</a> of JSON and CSV dropchart.io requests.
+
+The formatting in general depends on the chart type you want.  By default, all CSV charts will use the Stepped Area Chart (https://developers.google.com/chart/interactive/docs/gallery/steppedareachart).  
+
+<h4>Are there any examples I could look at?</h4>
+Yes!  Take a look at the <a href="dropchart-io-samples.zip">samples</a>.
+
+<h4>How should CSV files be formatted?</h4>
+CSV files will be parsed using the PapaParse (http://papaparse.com/)  library.  You can find some CSV examples in the <a href="dropchart-io-samples.zip">samples</a> collection.
+
+For CSV files, dropchart.io will test whether the first column - after the first row, which is always considered a header row - contains numeric or string values.  If it contains string values, then the first column will be interpreted as the chart’s X-axis.  If it only contains numeric values, then dropchart.io will automatically add a column called “Series” for the X-axis, with each row getting a new series sequence number.
+
+For example, take this CSV file of Gallup approval ratings for President Nixon from January of each year of his presidency:
+<p>
+<pre>
+Nixon's Approval Rating
+59
+61
+57
+50
+51
+23
+</pre>
+
+These data give you a chart with automatic X-axis sequence numbers:
+<p><img src="img/help_img_1.png">
+<p>This is the correct ordering, but perhaps it would be more meaningful to have the year for each approval rating.  Suppose you try this instead:
+<p>
+<pre>
+Year,Nixon's Approval Rating
+1969,59
+1970,61
+1971,57
+1972,50
+1973,51
+1974,23
+</pre>
+
+<p><img src="img/help_img_2.png">
+<p>Since the first column contains numbers, dropchart.io interprets the values as years.  Even if you add quotes around the year the values will be interpreted as numbers.  Instead, you can add some non-numeric characters (besides quoted) in there, like this:
+
+<p><pre>
+Year,Nixon's Approval Rating
+1-1-1969,59
+1-1-1970,61
+1-1-1971,57
+1-1-1972,50
+1-1-1973,51
+1-1-1974,23
+</pre>
+
+<p><img src="img/help_img_3.png">
+<p>It’s a bit cludgy, but that’s how it goes with CSV data.  If you want to be more explicit about the data, try building it in JSON.
+
+<h4>How should JSON files be formatted?</h4>
+dropchart.io JSON requests have the following basic format.  The first section is your options, and the second section is your values.  For most chart types, values contains an array of arrays, i.e. [ [1], [2], [3] ]:
+
+<p><pre>
+{
+  "options": {
+    "title":"Server CPU Utilization"
+  },
+  "values":[
+    ["date","user","sys"],
+    ["02/08/14 00:53:22",3,1],
+    ["02/08/14 00:53:32",97,1],
+    ["02/08/14 00:53:42",2,1]
+  ]
+}
+</pre>
+
+<p><img src="img/help_img_4.png">
+
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
