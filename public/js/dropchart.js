@@ -107,6 +107,28 @@ var dropchart = function() {
       );
     }
   }
+  
+  // Create a div to host a chart or display exception details.
+  function createChartDiv(inc, createButtons) {
+    var buttonsText = "";
+    //  Create buttons by default
+    if (typeof createButtons === "undefined") { createButtons = true; }
+    if (createButtons) {
+      buttonsText = '<button type="button" class="btn btn-default btn-lg dc-btn" id="btnChartDivImg'+inc+'" data-toggle="tooltip" data-placement="bottom" title="Generate PNG image from chart."><span class="glyphicon glyphicon-download-alt"></span></button>';
+    }
+
+    chartParent.append(
+        '<div class="row">'
+        +'<div class="col-md-1 dropBtnDiv">'
+        //+'<button type="button" class="btn btn-default btn dc-btn"><span class="glyphicon glyphicon-floppy-save"></span></button>'
+        +buttonsText
+        +'&nbsp;</div>'
+        + '<div class="col-md-10" align="center">'
+        +   '<div id="chartDiv'+inc+'" class="chartDiv drop-shadow"></div>'
+        + '</div>'
+        +'<div class="col-md-1">&nbsp;</div>'
+        +'</div>');
+  }
 
   // When files are dropped, process them asynchronously and store the inputs in chartInputs
   function readFile(file) {
@@ -165,7 +187,7 @@ var dropchart = function() {
             
       chartInputs.addInput(obj);
       var len = chartInputs.getLength();
-      chartParent.append(
+      /*chartParent.append(
         '<div class="row">'
         +'<div class="col-md-1 dropBtnDiv">'
         //+'<button type="button" class="btn btn-default btn dc-btn"><span class="glyphicon glyphicon-floppy-save"></span></button>'
@@ -175,7 +197,8 @@ var dropchart = function() {
         +   '<div id="chartDiv'+(len-1)+'" class="chartDiv drop-shadow"></div>'
         + '</div>'
         +'<div class="col-md-1">&nbsp;</div>'
-        +'</div>');
+        +'</div>');*/
+      createChartDiv(len-1, true);
       $('#btnChartDivImg'+(len-1)).tooltip();
       $('#btnChartDivImg'+(len-1)).click(function(){
         var c = $('#imgDiv').children();
@@ -229,14 +252,23 @@ var dropchart = function() {
 
         var promises = [];
         if(evt.originalEvent.dataTransfer){
-          for (var i = 0; i < evt.originalEvent.dataTransfer.files.length; i++) {
-            var file = evt.originalEvent.dataTransfer.files[i];
-            promises[i] = readFile(file);
-          }
-          $.when.apply($, promises).done(function() {
-            chartInputs.sort();
+          //  Something weird happened during processing.  The occurs when dragging files from a Windows zip folder, for instance.
+          if (evt.originalEvent.dataTransfer.files.length === 0) {
+            var msg = "Something weird happened and your files couldn't be processed!  This is known to happen if you drag and drop files from a Windows compressed folder (i.e. if you opened dropchart.io's samples ZIP file in Windows and tried dragging from there).  If this is what happened then please try extracting the files to a regular folder and dragging from there.";
+            var obj = {filename: "Unknown filename", status: "syntax error", message: msg, options:{title:"Weird error."} };
+            createChartDiv(0, false);
+            chartInputs.addInput(obj);
             drawAll(chartParent);
-          });
+          } else {
+            for (var i = 0; i < evt.originalEvent.dataTransfer.files.length; i++) {
+              var file = evt.originalEvent.dataTransfer.files[i];
+              promises[i] = readFile(file);
+            }
+            $.when.apply($, promises).done(function() {
+              chartInputs.sort();
+              drawAll(chartParent);
+            });
+          }
         }
       }
 

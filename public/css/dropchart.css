@@ -75,12 +75,12 @@
  
 .jumbotron {
     background: transparent;
-    color: white !important;
-    background-color: #1a55de !important;
+    color: white;
+    background-color: #1a55de;
 }
 
 body { 
-  font-family: 'lucida console';
+  /*font-family: 'lucida console';*/
   /* background-color: #5B957D !important */
 }
 
@@ -144,9 +144,11 @@ body {
 }
 
 .dc-btn {
-  border-color: #ffffff;
+  font-family: 'lucida console';
+  border-color: #fffff;
   color: #ffffff;
-  background-color: #5b957e;
+  /*background-color: #5b957e !important;*/
+  background-color: #0031a3;
 }
 
 .btn-file {
