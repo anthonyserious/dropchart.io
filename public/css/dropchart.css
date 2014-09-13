@@ -86,7 +86,11 @@ body {
 }
 
 .chartDiv {
-    height: 350px;
+  
+}
+
+svg {
+  width: 100% !important;
 }
 
 .drop:hover{
@@ -99,7 +103,8 @@ body {
 }
 
 .dropBtnDiv {
-    vertical-align: middle;
+  vertical-align: middle;
+  margin-top: 24px;
 }
 
 .drop-shadow {
@@ -145,4 +150,3 @@ body {
     display: none;
   }
 }
-

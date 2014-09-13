@@ -44,6 +44,8 @@ var dropchart = function() {
 
   var defaultOptions = {
     title: "Untitled",
+    "width": '100%',
+    "height": '100%',
     titleTextStyle:{
       fontName:"Trebuchet MS, Helvetica, sans-serif",
       fontSize:"24",
@@ -87,7 +89,7 @@ var dropchart = function() {
                   var input = chartInputs.getInput(i);
                   if (input['status']) {
                     $('#chartDiv'+i).html("<p><b>Filename: </b>"+input.filename+"</p><p><b>Status: </b>"+input['status']+"</p><p><b>Message: </b>"+input.message+"</p>");
-                    $('#chartDiv'+i).parents().find('.row').attr("name", input.options.title);
+                    // $('#chartDiv'+i).parents().find('.row').attr("name", input.options.title);
                   } else {
                     var chartData = google.visualization.arrayToDataTable(input.values);
                     var func;
