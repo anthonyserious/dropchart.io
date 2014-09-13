@@ -115,6 +115,7 @@ var dropchart = function() {
     if (typeof createButtons === "undefined") { createButtons = true; }
     if (createButtons) {
       buttonsText = '<button type="button" class="btn btn-default btn-lg dc-btn" id="btnChartDivImg'+inc+'" data-toggle="tooltip" data-placement="bottom" title="Generate PNG image from chart."><span class="glyphicon glyphicon-download-alt"></span></button>';
+      buttonsText += '<p><button type="button" class="btn btn-default btn-lg dc-btn" id="btnChartDivJSON'+inc+'" data-toggle="tooltip" data-placement="bottom" title="Display JSON chart request."><span class="glyphicon glyphicon-file"></span></button>';
     }
 
     chartParent.append(
@@ -186,8 +187,9 @@ var dropchart = function() {
 
       chartInputs.addInput(obj);
       var len = chartInputs.getLength();
-
       createChartDiv(len-1, true);
+
+      //  Set up modal to display PNG
       $('#btnChartDivImg'+(len-1)).tooltip();
       $('#btnChartDivImg'+(len-1)).click(function(){
         var c = $('#imgDiv').children();
@@ -195,7 +197,16 @@ var dropchart = function() {
         $('#imgDiv').append("<img src='"+ chartInputs.getImg(len-1)+"'>");
 
         $('#modalImg').modal();
-        
+      });
+
+      //  Set up modal to display JSON request
+      $('#btnChartDivJSON'+(len-1)).tooltip();
+      $('#btnChartDivJSON'+(len-1)).click(function(){
+        var c = $('#jsonDiv').children();
+        if (c) { c.remove(); }
+        $('#jsonDiv').append("<pre>"+JSON.stringify(chartInputs.getInput(len-1), null, "\t")+"</pre>");
+
+        $('#modalJSON').modal();
       });
       deferred.resolve(evt.target.result);
     } // fileEventHandler
