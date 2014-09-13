@@ -1,9 +1,8 @@
 {"options":{
 	"title":"appserver12",
 	"titleTextStyle":{
-		"fontName":"times",
-		"fontSize":"24",
-		"italic":true
+		"fontName":"Arial",
+		"fontSize":"24"
 	},
 	"legend":{
 		"textStyle":{
