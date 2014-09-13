@@ -184,20 +184,9 @@ var dropchart = function() {
         obj = {options: newOptions, values: inData.data};
       }
 
-            
       chartInputs.addInput(obj);
       var len = chartInputs.getLength();
-      /*chartParent.append(
-        '<div class="row">'
-        +'<div class="col-md-1 dropBtnDiv">'
-        //+'<button type="button" class="btn btn-default btn dc-btn"><span class="glyphicon glyphicon-floppy-save"></span></button>'
-        +'<button type="button" class="btn btn-default btn-lg dc-btn" id="btnChartDivImg'+(len-1)+'" data-toggle="tooltip" data-placement="bottom" title="Generate PNG image from chart."><span class="glyphicon glyphicon-download-alt"></span></button>'
-        +'&nbsp;</div>'
-        + '<div class="col-md-10" align="center">'
-        +   '<div id="chartDiv'+(len-1)+'" class="chartDiv drop-shadow"></div>'
-        + '</div>'
-        +'<div class="col-md-1">&nbsp;</div>'
-        +'</div>');*/
+
       createChartDiv(len-1, true);
       $('#btnChartDivImg'+(len-1)).tooltip();
       $('#btnChartDivImg'+(len-1)).click(function(){
@@ -273,25 +262,27 @@ var dropchart = function() {
       }
 
       dropArea.on('dragstart', function(evt) {
-          evt.preventDefault();
-          evt.stopPropagation();
+        evt.preventDefault();
+        evt.stopPropagation();
+        $("body").addClass('draggingData');
       });
 
       dropArea.on('dragover', function(evt) {
-          evt.preventDefault();
-          evt.stopPropagation();
+        evt.preventDefault();
+        evt.stopPropagation();
+        $("body").addClass('draggingData');
       });
 
       dropArea.on('dragenter', function(evt) {
         evt.preventDefault();
         evt.stopPropagation();
-        $("body").toggleClass('draggingData');
+        $("body").addClass('draggingData');
       });
 
       dropArea.on('dragleave', function(evt) {
         evt.preventDefault();
         evt.stopPropagation();
-        $("body").toggleClass('draggingData');
+        $("body").removeClass('draggingData');
       });
 
       dropArea.on('drop', dropAreaDropHandler);
