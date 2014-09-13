@@ -1,15 +1,7 @@
-{"options":{
+{"options":
+  {
 	"title":"appserver12",
-	"titleTextStyle":{
-		"fontName":"Arial",
-		"fontSize":"24"
-	},
-	"legend":{
-		"textStyle":{
-			"fontName":"times",
-			"fontSize":"18"
-		}	
-	}
+	"isStacked":"true"
 },"values":[
 ["date","user","sys"],
 ["02/08/14 00:14:16",3,1],
