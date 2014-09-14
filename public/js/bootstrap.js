@@ -883,7 +883,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
       var transition = $.support.transition && that.$element.hasClass('fade')
 
       if (!that.$element.parent().length) {
-        that.$element.appendTo(that.$body) // don't move modals dom position
+        that.$element.appendTo(that.$body); // don't move modals dom position
       }
 
       that.$element
@@ -913,7 +913,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
   }
 
   Modal.prototype.hide = function (e) {
-    if (e) e.preventDefault()
+    if (e) e.preventDefault();
 
     e = $.Event('hide.bs.modal')
 
@@ -923,7 +923,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
 
     this.isShown = false
 
-    this.$body.removeClass('modal-open')
+    this.$body.removeClass('modal-open');
 
     this.resetScrollbar()
     this.escape()
@@ -966,7 +966,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     var that = this
     this.$element.hide()
     this.backdrop(function () {
-      that.$element.trigger('hidden.bs.modal')
+      that.$element.trigger('hidden.bs.modal');
     })
   }
 
@@ -1090,7 +1090,8 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     $target.one('show.bs.modal', function (showEvent) {
       if (showEvent.isDefaultPrevented()) return // only register focus restorer if modal will actually get shown
       $target.one('hidden.bs.modal', function () {
-        $this.is(':visible') && $this.trigger('focus')
+        // this seems to solve issue #20
+        $this.is(':visible');
       })
     })
     Plugin.call($target, option, this)
