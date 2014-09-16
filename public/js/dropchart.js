@@ -3,6 +3,8 @@
 var dropchart = function() {
   var dropArea;
   var chartParent;
+  var imgWidth = ($(window).width() * 0.7) + 'px';
+  var modalWidth = ($(window).width() * 0.75) + 'px';
 
   // Inputs object.  Operations wrapping chart input/img tuples.
   var chartInputs = function() {
@@ -196,9 +198,11 @@ var dropchart = function() {
       $('#btnChartDivImg'+(len-1)).click(function(){
         var c = $('#imgDiv').children();
         if (c) { c.remove(); }
-        $('#imgDiv').append("<img src='"+ chartInputs.getImg(len-1)+"'>");
-
+        $('#imgDiv').append("<img width='" + imgWidth + "'  src='"+ chartInputs.getImg(len-1)+"'>");
+        $('#imgDiv').css('margin-left', '-5px')
         $('#modalImg').modal();
+        $('.modal-body').width(modalWidth)
+        // $('.modal-open').css('width', width);
       });
 
       //  Set up modal to display JSON request
