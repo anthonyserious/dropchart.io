@@ -114,14 +114,12 @@ body {
     vertical-align: middle;
 }
 
-.dcModal {
-    /* recenter based on std 600px modal width:  (600 - NewWidth) / 2 */
-    margin-left: -212px;
-    width: 1024px;
+.chartDiv {
+  
 }
 
-.chartDiv {
-    height: 350px;
+svg {
+  width: 100% !important;
 }
 
 .drop:hover{
@@ -134,7 +132,8 @@ body {
 }
 
 .dropBtnDiv {
-    vertical-align: middle;
+  vertical-align: middle;
+  margin-top: 24px;
 }
 
 .drop-shadow {
@@ -207,5 +206,9 @@ body {
   .mobile-main{
     display: none;
   }
+  .dcModal {
+    /* recenter based on std 600px modal width:  (600 - NewWidth) / 2 */
+    margin-left: -212px;
+    width: 1024px;
+  }
 }
-
