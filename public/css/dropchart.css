@@ -169,11 +169,16 @@ svg {
   background-color: #4A78E1;
 }
 
+
 .dc-btn:hover {
   font-family: 'lucida console';
   border-color: white;
   color: white;
   background-color: #7D9DE7;
+}
+
+.dc-btn:active {
+  background-color: #4A78E1;
 }
 
 .btn-file {
@@ -208,6 +213,7 @@ svg {
   }
   .dcModal {
     /* recenter based on std 600px modal width:  (600 - NewWidth) / 2 */
+    align: center;
     margin-left: -212px;
     width: 1024px;
   }
