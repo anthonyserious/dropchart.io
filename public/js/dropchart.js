@@ -305,6 +305,9 @@ var dropchart = function() {
       dropArea.on('drop', dropAreaDropHandler);
       document.getElementById('inputFiles').addEventListener('change', inputFilesHandler, false);
 
+      //  reset modals
+      $('#modalHelp').on('hidden.bs.modal', function() { $('#btnHelp').reset(); });
+      $('#modalAbout').on('hidden.bs.modal', function() { $('#btnAbout').reset(); });
     } // init
   } // return
 
