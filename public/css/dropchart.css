@@ -187,6 +187,10 @@ svg {
   background-color: #4A78E1;
 }
 
+.dc-editor {
+  height: 300px;
+}
+
 .btn-file {
     position: relative;
     overflow: hidden;

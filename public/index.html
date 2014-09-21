@@ -50,6 +50,7 @@
         <p><br>
         <div class="btn-group">
           <a id="btnHelp" class="btn dc-btn" href="dropchart-io-samples.zip">Samples</a>
+          <button id="btnEditor" class="btn dc-btn" data-toggle="modal" data-target="#modalEditor">Editor</button>
           <button id="btnHelp" class="btn dc-btn" data-toggle="modal" data-target="#modalHelp">Help</button>
           <button id="btnAbout" class="btn dc-btn" data-toggle="modal" data-target="#modalAbout">About</button>
         </div>
@@ -247,6 +248,24 @@ dropchart.io JSON requests have the following basic format.  The first section i
       </div>
     </div><!-- // chart JSON -->
 
+    <!-- Editor -->
+    <div class="modal fade" id="modalEditor" tabindex="-1" role="dialog" aria-labelledby="modalEditorLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content dcModal">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="modalEditorLabel">JSON editor</h4>
+          </div>
+          <div id="editorDiv" class="modal-body dc-editor">
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="btnEditorSave" class="btn btn-default" data-dismiss="modal">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- // Editor -->
+
   </body>
   <!-- Bootstrap core JavaScript
   ================================================== -->
@@ -254,6 +273,8 @@ dropchart.io JSON requests have the following basic format.  The first section i
   <!--<script src="js/jquery.js"></script>-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script src="http://cdn.jsdelivr.net/ace/1.1.6/min/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="http://cdn.jsdelivr.net/ace/1.1.6/min/mode-json.js" type="text/javascript" charset="utf-8"></script>
   <script src="/js/bootstrap.min.js"></script>
   <script src="/js/papaparse.js"></script>
   <script src="/js/dropchart.js"></script>

@@ -5,10 +5,12 @@ var dropchart = function() {
   var chartParent;
   var imgWidth = ($(window).width() * 0.7) + 'px';
   var modalWidth = ($(window).width() * 0.75) + 'px';
+  var editor;
 
   // Inputs object.  Operations wrapping chart input/img tuples.
   var chartInputs = function() {
     var inputs = [];
+    var beingEdited = -1;
     return {
       init: function() {
         inputs = [];
@@ -22,6 +24,9 @@ var dropchart = function() {
       getInput: function(n) {
         return inputs[n].input;
       },
+      setInput: function(n, f) {
+        inputs[n] = {input: f, img: ""};
+      },
       setImg: function(n, s) {
         inputs[n].img = s;
       },
@@ -33,6 +38,12 @@ var dropchart = function() {
       },
       setChartType: function(i, chartType) {
         inputs[i].input.options.chartType = chartType;
+      },
+      setBeingEdited: function(id) { 
+        beingEdited = id;
+      },
+      getBeingEdited: function() {
+        return beingEdited;
       },
       sort: function() {
         inputs.sort(function(a, b) {
@@ -76,7 +87,6 @@ var dropchart = function() {
     "BubbleChart",
     "CandlestickChart",
     "ColumnChart",
-    "ComboChart",
     "GeoChart",
     "Histogram",
     "LineChart",
@@ -116,11 +126,6 @@ var dropchart = function() {
     }
   }
 
-  //  Callback to regenerate charts after selecting a different chart type from an already-rendered chart.
-  function rebuildChartsAfterChartTypeSelect(inc) {
-    //chartInputs.getInput(inc).chartType = $('#select'+i
-  }
-  
   // Create a div to host a chart or display exception details.
   function createChartDiv(inc, createButtons) {
     var buttonsText = "";
@@ -232,14 +237,27 @@ var dropchart = function() {
         // $('.modal-open').css('width', width);
       });
 
-      //  Set up modal to display JSON request
+      //  Set up modal to display/edit JSON request
       $('#btnChartDivJSON'+(len-1)).tooltip();
       $('#btnChartDivJSON'+(len-1)).click(function(){
         var c = $('#jsonDiv').children();
         if (c) { c.remove(); }
-        $('#jsonDiv').append("<pre>"+JSON.stringify(chartInputs.getInput(len-1), null, "\t")+"</pre>");
-
-        $('#modalJSON').modal();
+        $('#editorDiv').append(JSON.stringify(chartInputs.getInput(len-1), null, "\t"));
+        chartInputs.setBeingEdited(len-1);
+        $('#modalEditor').modal();
+        $('#btnEditorSave').click(function() {
+          var obj = {};
+          try { 
+            obj = JSON.parse(editor.getSession().getValue());
+            chartInputs.setInput(len-1, obj);
+            drawAll();
+          } catch(e) { 
+            var fileName = chartInputs.getInput(len-1).options.title;
+            obj = {filename: fileName, status: "syntax error", message: e, options:{title:fileName} };
+            chartInputs.setInput(len-1, obj);
+            drawAll();
+          }
+        });
       });
       deferred.resolve(evt.target.result);
     } // fileEventHandler
@@ -335,6 +353,11 @@ var dropchart = function() {
       //  reset modals
       $('#modalHelp').on('hidden.bs.modal', function() { });//$('#btnHelp').button('reset'); });
       $('#modalAbout').on('hidden.bs.modal', function() { $('#btnAbout').button('reset'); });
+      $('#modalEditor').on('show.bs.modal', function() { 
+        console.log("showing");
+        editor = ace.edit("editorDiv");
+        editor.getSession().setMode("ace/mode/json");
+      });
     } // init
   } // return
 
