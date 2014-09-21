@@ -31,6 +31,9 @@ var dropchart = function() {
       getLength: function() {
         return inputs.length;
       },
+      setChartType: function(i, chartType) {
+        inputs[i].input.options.chartType = chartType;
+      },
       sort: function() {
         inputs.sort(function(a, b) {
           return a.input.options.title.localeCompare(b.input.options.title);
@@ -48,7 +51,8 @@ var dropchart = function() {
   var defaultOptions = {
     title: "Untitled",
     // "width": '100%',
-    // "height": '100%',
+    height: '350',
+    chartType: "SteppedAreaChart",
     titleTextStyle:{
       fontName:"Trebuchet MS, Helvetica, sans-serif",
       fontSize:"24",
@@ -111,6 +115,11 @@ var dropchart = function() {
       );
     }
   }
+
+  //  Callback to regenerate charts after selecting a different chart type from an already-rendered chart.
+  function rebuildChartsAfterChartTypeSelect(inc) {
+    //chartInputs.getInput(inc).chartType = $('#select'+i
+  }
   
   // Create a div to host a chart or display exception details.
   function createChartDiv(inc, createButtons) {
@@ -118,8 +127,17 @@ var dropchart = function() {
     //  Create buttons by default
     if (typeof createButtons === "undefined") { createButtons = true; }
     if (createButtons) {
+      //  Button to display PNG 
       buttonsText = '<button type="button" class="btn btn-default btn-lg dc-btn" id="btnChartDivImg'+inc+'" data-toggle="tooltip" data-placement="bottom" title="Generate PNG image from chart."><span class="glyphicon glyphicon-download-alt"></span></button>';
+
+      //  Button to display JSON
       buttonsText += '<p><button type="button" class="btn btn-default btn-lg dc-btn" id="btnChartDivJSON'+inc+'" data-toggle="tooltip" data-placement="bottom" title="Display JSON chart request."><span class="glyphicon glyphicon-file"></span></button>';
+
+      //  Select menu to select different chart type
+      buttonsText += '<select class="form-control dc-select" id="select'+inc+'">';
+      buttonsText += '<option selected="selected">Chart type</option>';
+      chartTypes.forEach(function(opt) { buttonsText += '<option id="'+opt+'">'+opt+'</option>'; });
+      buttonsText += '</select>';
     }
 
     chartParent.append(
@@ -133,6 +151,15 @@ var dropchart = function() {
         + '</div>'
         +'<div class="col-md-1">&nbsp;</div>'
         +'</div>');
+
+    //  Event handler for chart type select
+    $('#select'+inc).change(function() {
+      var opt = $('#select'+inc+' option:selected').val();
+      if (opt !== "Chart type") {
+        chartInputs.setChartType(inc, opt);
+        drawAll(chartParent);
+      }
+    });
   }
 
   // When files are dropped, process them asynchronously and store the inputs in chartInputs
@@ -306,8 +333,8 @@ var dropchart = function() {
       document.getElementById('inputFiles').addEventListener('change', inputFilesHandler, false);
 
       //  reset modals
-      $('#modalHelp').on('hidden.bs.modal', function() { $('#btnHelp').reset(); });
-      $('#modalAbout').on('hidden.bs.modal', function() { $('#btnAbout').reset(); });
+      $('#modalHelp').on('hidden.bs.modal', function() { });//$('#btnHelp').button('reset'); });
+      $('#modalAbout').on('hidden.bs.modal', function() { $('#btnAbout').button('reset'); });
     } // init
   } // return
 

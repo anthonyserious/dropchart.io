@@ -162,6 +162,11 @@ svg {
     text-decoration: underline
 }
 
+.dc-select {
+  color: white;
+  background-color: #4A78E1;
+}
+
 .dc-btn {
   font-family: 'lucida console';
   border-color: white;
@@ -178,6 +183,7 @@ svg {
 }
 
 .dc-btn:active {
+  color:white;
   background-color: #4A78E1;
 }
 
