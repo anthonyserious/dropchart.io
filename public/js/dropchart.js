@@ -95,34 +95,34 @@ var dropchart = function() {
     "SteppedAreaChart"
   ];
 
+
   // build a single chart
   function drawAll(elem) {
     if(google) {
       google.load("visualization", "1.0", {
-              packages:["corechart"],
-              callback: function () {
-                for (var i = 0; i < chartInputs.getLength(); i++) {
-                  var input = chartInputs.getInput(i);
-                  if (input['status']) {
-                    $('#chartDiv'+i).html("<p><b>Filename: </b>"+input.filename+"</p><p><b>Status: </b>"+input['status']+"</p><p><b>Message: </b>"+input.message+"</p>");
-                  } else {
-                    var chartData = google.visualization.arrayToDataTable(input.values);
-                    var func;
-                    if (input.options.chartType) {// && chartTypes[chartInputs[i].options.chartType]) {
-                      func = google.visualization[input.options.chartType];
-                    } else{
-                      func = google.visualization["SteppedAreaChart"];
-                    }
-                    var chart = new func(document.getElementById("chartDiv"+i));
-                    google.visualization.events.addListener(chart, 'ready', function () {
-                      chartInputs.setImg(i, chart.getImageURI());
-                    });
-                    chart.draw(chartData, input.options);
-                  }
-                }
+        packages:["corechart"],
+        callback: function () {
+          for (var i = 0; i < chartInputs.getLength(); i++) {
+            var input = chartInputs.getInput(i);
+            if (input['status']) {
+              $('#chartDiv'+i).html("<p><b>Filename: </b>"+input.filename+"</p><p><b>Status: </b>"+input['status']+"</p><p><b>Message: </b>"+input.message+"</p>");
+            } else {
+              var chartData = google.visualization.arrayToDataTable(input.values);
+              var func;
+              if (input.options.chartType) {// && chartTypes[chartInputs[i].options.chartType]) {
+                func = google.visualization[input.options.chartType];
+              } else{
+                func = google.visualization["SteppedAreaChart"];
               }
+              var chart = new func(document.getElementById("chartDiv"+i));
+              google.visualization.events.addListener(chart, 'ready', function () {
+                chartInputs.setImg(i, chart.getImageURI());
+              });
+              chart.draw(chartData, input.options);
+            }
           }
-      );
+        }
+      });
     }
   }
 
@@ -167,6 +167,62 @@ var dropchart = function() {
     });
   }
 
+  //
+  //  All parse logic contained here.  Supported file types:
+  //  *  JSON
+  //  *  CSV
+  //  *  ...vmstat (Linux, Solaris)
+  //
+  function parseInput(input) {
+    var obj = {};
+    var inData = {};
+    var fileType = input.fileName.split('.').pop().toLowerCase();
+    
+    if (fileType === "json") {
+      try { 
+        inData = JSON.parse(input.data);
+      } catch(e) { 
+        obj = {filename: input.fileName, status: "syntax error", message: e, options:{title:input.fileName} };
+      }
+      
+      if (obj.hasOwnProperty('status') === false) {
+        var newOptions = {};
+        // merge default and custom options
+        for (var k in defaultOptions) {
+          newOptions[k] = defaultOptions[k];
+        }
+        // automatically set the chart title to be the filename (minus extension)
+        newOptions.title = input.fileName.split('.')[0];
+        if (inData['options']) {
+          for (var k in inData['options']) {
+            newOptions[k] = inData['options'][k];
+          }
+        } 
+        obj = {options: newOptions, values: inData['values']};
+      }
+    } else { // Just assume that the default is CSV.  if (fileType === "csv") {
+      var newOptions = {};
+      for (var k in defaultOptions) {
+        newOptions[k] = defaultOptions[k];
+      }
+      // automatically set the chart title to be the filename (minus extension)
+      newOptions.title = input.fileName.split('.')[0];
+      inData = Papa.parse(input.data, {dynamicTyping:true});
+
+      // If first line starts with a number, then assume that there's no X-axis series labels.  Autopopulate them here.
+      if (inData.data.length > 1 && typeof inData.data[1][0] === "number") {
+        var arrayLength = inData.data[0].length;
+        inData.data[0].unshift("Series");
+        for (var i = 1; i < inData.data.length; i++) {
+
+          inData.data[i].unshift(i.toString());
+        }
+      }
+      obj = {options: newOptions, values: inData.data};
+    }
+    return obj;
+  }
+
   // When files are dropped, process them asynchronously and store the inputs in chartInputs
   function readFile(file) {
     //console.log(file);
@@ -175,51 +231,10 @@ var dropchart = function() {
  
     function readerOnLoadEventHandler(evt) {
       var obj = {};
-      var inData = {};
-      var file_type = file.name.split('.').pop().toLowerCase();
-
-      if (file_type === "json") {
-        try { 
-          inData = JSON.parse(evt.target.result);
-        } catch(e) { 
-          obj = {filename: file.name, status: "syntax error", message: e, options:{title:file.name} };
-        }
-        
-        if (obj.hasOwnProperty('status') === false) {
-          var newOptions = {};
-          // merge default and custom options
-          for (var k in defaultOptions) {
-            newOptions[k] = defaultOptions[k];
-          }
-          // automatically set the chart title to be the filename (minus extension)
-          newOptions.title = file.name.split('.')[0];
-          if (inData['options']) {
-            for (var k in inData['options']) {
-              newOptions[k] = inData['options'][k];
-            }
-          } 
-          obj = {options: newOptions, values: inData['values']};
-        }
-      } else { // Just assume that the default is CSV.  if (file_type === "csv") {
-        var newOptions = {};
-        for (var k in defaultOptions) {
-          newOptions[k] = defaultOptions[k];
-        }
-        // automatically set the chart title to be the filename (minus extension)
-        newOptions.title = file.name.split('.')[0];
-        inData = Papa.parse(evt.target.result, {dynamicTyping:true});
-
-        // If first line starts with a number, then assume that there's no X-axis series labels.  Autopopulate them here.
-        if (inData.data.length > 1 && typeof inData.data[1][0] === "number") {
-          var arrayLength = inData.data[0].length;
-          inData.data[0].unshift("Series");
-          for (var i = 1; i < inData.data.length; i++) {
-
-            inData.data[i].unshift(i.toString());
-          }
-        }
-        obj = {options: newOptions, values: inData.data};
-      }
+      
+      //  This gets passed to our parser
+      var request = {fileName: file.name, data: evt.target.result};
+      obj = parseInput(request);
 
       chartInputs.addInput(obj);
       var len = chartInputs.getLength();
