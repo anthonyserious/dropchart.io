@@ -104,6 +104,7 @@ var dropchart = function() {
         callback: function () {
           for (var i = 0; i < chartInputs.getLength(); i++) {
             var input = chartInputs.getInput(i);
+            console.log(input);
             if (input['status']) {
               $('#chartDiv'+i).html("<p><b>Filename: </b>"+input.filename+"</p><p><b>Status: </b>"+input['status']+"</p><p><b>Message: </b>"+input.message+"</p>");
             } else {
@@ -122,9 +123,9 @@ var dropchart = function() {
             }
           }
         }
-      });
+      }); // google.load()
     }
-  }
+  } // drawAll()
 
   // Create a div to host a chart or display exception details.
   function createChartDiv(inc, createButtons) {
@@ -133,10 +134,10 @@ var dropchart = function() {
     if (typeof createButtons === "undefined") { createButtons = true; }
     if (createButtons) {
       //  Button to display PNG 
-      buttonsText = '<button type="button" class="btn btn-default btn-lg dc-btn" id="btnChartDivImg'+inc+'" data-toggle="tooltip" data-placement="bottom" title="Generate PNG image from chart."><span class="glyphicon glyphicon-download-alt"></span></button>';
+      buttonsText = '<button type="button" class="btn btn-default btn-lg dc-btn-side" id="btnChartDivImg'+inc+'" data-toggle="tooltip" data-placement="bottom" title="Generate PNG image from chart."><span class="glyphicon glyphicon-download-alt"></span></button>';
 
       //  Button to display JSON
-      buttonsText += '<p><button type="button" class="btn btn-default btn-lg dc-btn" id="btnChartDivJSON'+inc+'" data-toggle="tooltip" data-placement="bottom" title="Display JSON chart request."><span class="glyphicon glyphicon-file"></span></button>';
+      buttonsText += '<p><button type="button" class="btn btn-default btn-lg dc-btn-side" id="btnChartDivJSON'+inc+'" data-toggle="tooltip" data-placement="bottom" title="Display JSON chart request."><span class="glyphicon glyphicon-file"></span></button>';
 
       //  Select menu to select different chart type
       buttonsText += '<select class="form-control dc-select" id="select'+inc+'">';
@@ -223,6 +224,40 @@ var dropchart = function() {
     return obj;
   }
 
+  function displayEditor(inc) {
+    console.log("called, inc: "+inc);
+    
+    editor.getSession().setValue("");
+    if (inc !== -1) {
+      editor.getSession().setValue(JSON.stringify(chartInputs.getInput(inc), null, "\t"));
+      chartInputs.setBeingEdited(inc);
+      $('#modalEditor').modal();
+    }
+
+    $('#btnEditorSave').unbind(editorSaveFn);
+    var editorSaveFn = function() {
+      console.log("editorSavefn, inc: "+inc);
+      var obj = {};
+      try { 
+        obj = JSON.parse(editor.getSession().getValue());
+        if (inc === -1) {
+          chartInputs.reset();
+          chartInputs.addInput(obj);
+          createChartDiv(0, true);
+        } else {
+          chartInputs.setInput(inc, obj);
+        }
+        drawAll();
+      } catch(e) { 
+        var fileName = chartInputs.getInput(inc).options.title;
+        obj = {filename: fileName, status: "syntax error", message: e, options:{title:fileName} };
+        chartInputs.setInput(inc, obj);
+        drawAll();
+      }
+    }
+    $('#btnEditorSave').click(editorSaveFn);
+  }
+
   // When files are dropped, process them asynchronously and store the inputs in chartInputs
   function readFile(file) {
     //console.log(file);
@@ -230,50 +265,29 @@ var dropchart = function() {
     var deferred = $.Deferred();
  
     function readerOnLoadEventHandler(evt) {
-      var obj = {};
-      
-      //  This gets passed to our parser
-      var request = {fileName: file.name, data: evt.target.result};
-      obj = parseInput(request);
+      var obj = parseInput({fileName: file.name, data: evt.target.result});
 
       chartInputs.addInput(obj);
-      var len = chartInputs.getLength();
-      createChartDiv(len-1, true);
+      var inc = chartInputs.getLength() - 1;
+      createChartDiv(inc, true);
 
       //  Set up modal to display PNG
-      $('#btnChartDivImg'+(len-1)).tooltip();
-      $('#btnChartDivImg'+(len-1)).click(function(){
+      $('#btnChartDivImg'+(inc)).tooltip();
+      $('#btnChartDivImg'+(inc)).click(function(){
         var c = $('#imgDiv').children();
         if (c) { c.remove(); }
-        $('#imgDiv').append("<img width='" + imgWidth + "'  src='"+ chartInputs.getImg(len-1)+"'>");
+        $('#imgDiv').append("<img width='" + imgWidth + "'  src='"+ chartInputs.getImg(inc)+"'>");
         $('#imgDiv').css('margin-left', '-5px')
         $('#modalImg').modal();
         $('.modal-body').width(modalWidth)
-        // $('.modal-open').css('width', width);
       });
 
       //  Set up modal to display/edit JSON request
-      $('#btnChartDivJSON'+(len-1)).tooltip();
-      $('#btnChartDivJSON'+(len-1)).click(function(){
-        var c = $('#jsonDiv').children();
-        if (c) { c.remove(); }
-        $('#editorDiv').append(JSON.stringify(chartInputs.getInput(len-1), null, "\t"));
-        chartInputs.setBeingEdited(len-1);
-        $('#modalEditor').modal();
-        $('#btnEditorSave').click(function() {
-          var obj = {};
-          try { 
-            obj = JSON.parse(editor.getSession().getValue());
-            chartInputs.setInput(len-1, obj);
-            drawAll();
-          } catch(e) { 
-            var fileName = chartInputs.getInput(len-1).options.title;
-            obj = {filename: fileName, status: "syntax error", message: e, options:{title:fileName} };
-            chartInputs.setInput(len-1, obj);
-            drawAll();
-          }
-        });
+      $('#btnChartDivJSON'+(inc)).tooltip();
+      $('#btnChartDivJSON'+(inc)).click(function() {
+        displayEditor(inc);
       });
+
       deferred.resolve(evt.target.result);
     } // fileEventHandler
 
@@ -368,10 +382,14 @@ var dropchart = function() {
       //  reset modals
       $('#modalHelp').on('hidden.bs.modal', function() { });//$('#btnHelp').button('reset'); });
       $('#modalAbout').on('hidden.bs.modal', function() { $('#btnAbout').button('reset'); });
-      $('#modalEditor').on('show.bs.modal', function() { 
-        console.log("showing");
-        editor = ace.edit("editorDiv");
-        editor.getSession().setMode("ace/mode/json");
+      editor = ace.edit("editorDiv");
+      editor.getSession().setMode("ace/mode/json");
+      $('#modalEditor').on('hidden.bs.modal', function() {
+        editor.getSession().setValue("");
+        chartInputs.setBeingEdited(-1);
+      });
+      $('#modalEditor').on('show.bs.modal', function() {
+        displayEditor(-1);
       });
     } // init
   } // return

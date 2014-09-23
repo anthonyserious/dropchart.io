@@ -137,8 +137,8 @@ svg {
 }
 
 .drop-shadow {
-  -webkit-box-shadow: 0 0 15px 2px rgba(0, 0, 0, .5);
-  box-shadow: 0 0 15px 2px rgba(0, 0, 0, .5);
+  -webkit-box-shadow: 6px 5px 45px 2px rgba(0, 0, 0, .5);
+  box-shadow: 6px 5px 45px 2px rgba(0, 0, 0, .5);
   border-radius:5px;
   margin: 25px;
 }
@@ -162,10 +162,6 @@ svg {
     text-decoration: underline
 }
 
-.dc-select {
-  color: white;
-  background-color: #4A78E1;
-}
 
 .dc-btn {
   font-family: 'lucida console';
@@ -173,7 +169,6 @@ svg {
   color: white;
   background-color: #4A78E1;
 }
-
 
 .dc-btn:hover {
   font-family: 'lucida console';
@@ -186,6 +181,31 @@ svg {
   color:white;
   background-color: #4A78E1;
 }
+
+.dc-select {
+  color: white;
+  background-color: #1a55de;
+}
+
+.dc-btn-side {
+  font-family: 'lucida console';
+  border-color: white;
+  color: white;
+  background-color: #1a55de;
+}
+
+.dc-btn-side:hover {
+  font-family: 'lucida console';
+  border-color: white;
+  color: white;
+  background-color: #7D9DE7;
+}
+
+.dc-btn-side:active {
+  color:white;
+  background-color: #1a55de;
+}
+
 
 .dc-editor {
   height: 300px;
