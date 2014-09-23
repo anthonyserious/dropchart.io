@@ -104,7 +104,6 @@ var dropchart = function() {
         callback: function () {
           for (var i = 0; i < chartInputs.getLength(); i++) {
             var input = chartInputs.getInput(i);
-            console.log(input);
             if (input['status']) {
               $('#chartDiv'+i).html("<p><b>Filename: </b>"+input.filename+"</p><p><b>Status: </b>"+input['status']+"</p><p><b>Message: </b>"+input.message+"</p>");
             } else {
@@ -225,7 +224,6 @@ var dropchart = function() {
   }
 
   function displayEditor(inc) {
-    console.log("called, inc: "+inc);
     
     editor.getSession().setValue("");
     if (inc !== -1) {
@@ -236,13 +234,14 @@ var dropchart = function() {
 
     $('#btnEditorSave').unbind(editorSaveFn);
     var editorSaveFn = function() {
-      console.log("editorSavefn, inc: "+inc);
       var obj = {};
       try { 
         obj = JSON.parse(editor.getSession().getValue());
         if (inc === -1) {
           chartInputs.reset();
           chartInputs.addInput(obj);
+          var chartChildren = chartParent.children();
+          if (chartChildren) { chartChildren.remove(); }
           createChartDiv(0, true);
         } else {
           chartInputs.setInput(inc, obj);
@@ -255,6 +254,7 @@ var dropchart = function() {
         drawAll();
       }
     }
+    chartInputs.setBeingEdited(-1);
     $('#btnEditorSave').click(editorSaveFn);
   }
 
@@ -380,8 +380,12 @@ var dropchart = function() {
       document.getElementById('inputFiles').addEventListener('change', inputFilesHandler, false);
 
       //  reset modals
-      $('#modalHelp').on('hidden.bs.modal', function() { });//$('#btnHelp').button('reset'); });
-      $('#modalAbout').on('hidden.bs.modal', function() { $('#btnAbout').button('reset'); });
+      $('#modalHelp').on('hidden.bs.modal', function() { });
+      $('#modalAbout').on('hidden.bs.modal', function() {
+        $('#btnAbout').button('reset'); 
+      });
+
+      //  Initialize JSON editor
       editor = ace.edit("editorDiv");
       editor.getSession().setMode("ace/mode/json");
       $('#modalEditor').on('hidden.bs.modal', function() {
@@ -389,7 +393,10 @@ var dropchart = function() {
         chartInputs.setBeingEdited(-1);
       });
       $('#modalEditor').on('show.bs.modal', function() {
-        displayEditor(-1);
+        // else we're calling .modal() from within displayEditor() - avoid infinite reursion
+        if (chartInputs.getBeingEdited() === -1) {
+          displayEditor(-1);
+        } 
       });
     } // init
   } // return
