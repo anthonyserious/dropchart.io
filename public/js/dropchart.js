@@ -165,13 +165,31 @@ var dropchart = function() {
         drawAll(chartParent);
       }
     });
+
+    
+    //  Set up modal to display PNG
+    $('#btnChartDivImg'+(inc)).tooltip();
+    $('#btnChartDivImg'+(inc)).click(function(){
+      var c = $('#imgDiv').children();
+      if (c) { c.remove(); }
+      $('#imgDiv').append("<img width='" + imgWidth + "'  src='"+ chartInputs.getImg(inc)+"'>");
+      $('#imgDiv').css('margin-left', '-5px')
+      $('#modalImg').modal();
+      $('.modal-body').width(modalWidth)
+    });
+
+    //  Set up modal to display/edit JSON request
+    $('#btnChartDivJSON'+(inc)).tooltip();
+    $('#btnChartDivJSON'+(inc)).click(function() {
+      displayEditor(inc);
+    });
   }
 
   //
   //  All parse logic contained here.  Supported file types:
   //  *  JSON
   //  *  CSV
-  //  *  ...vmstat (Linux, Solaris)
+  //  *  ...vmstat (Linux, Solaris)?  Vol surfaces with 3D charts?
   //
   function parseInput(input) {
     var obj = {};
@@ -224,8 +242,8 @@ var dropchart = function() {
   }
 
   function displayEditor(inc) {
-    
     editor.getSession().setValue("");
+
     if (inc !== -1) {
       editor.getSession().setValue(JSON.stringify(chartInputs.getInput(inc), null, "\t"));
       chartInputs.setBeingEdited(inc);
@@ -233,27 +251,31 @@ var dropchart = function() {
     }
 
     $('#btnEditorSave').unbind(editorSaveFn);
+
+    //  Setup a save callback as a variable so we can unbind it
     var editorSaveFn = function() {
-      var obj = {};
-      try { 
-        obj = JSON.parse(editor.getSession().getValue());
-        if (inc === -1) {
-          chartInputs.reset();
-          chartInputs.addInput(obj);
-          var chartChildren = chartParent.children();
-          if (chartChildren) { chartChildren.remove(); }
-          createChartDiv(0, true);
-        } else {
-          chartInputs.setInput(inc, obj);
+      var input = {};
+      input.fileName = "manually_edited.json";
+      input.data = editor.getSession().getValue();
+      var obj = parseInput(input);
+    
+      if (inc === -1) {
+        chartInputs.reset();
+        chartInputs.addInput(obj);
+        
+        var chartChildren = chartParent.children();
+        if (chartChildren) { 
+          chartChildren.remove(); 
         }
-        drawAll();
-      } catch(e) { 
-        var fileName = chartInputs.getInput(inc).options.title;
-        obj = {filename: fileName, status: "syntax error", message: e, options:{title:fileName} };
+        
+        createChartDiv(0, true);
+      } else {
         chartInputs.setInput(inc, obj);
-        drawAll();
       }
+      
+      drawAll();
     }
+
     chartInputs.setBeingEdited(-1);
     $('#btnEditorSave').click(editorSaveFn);
   }
@@ -266,27 +288,10 @@ var dropchart = function() {
  
     function readerOnLoadEventHandler(evt) {
       var obj = parseInput({fileName: file.name, data: evt.target.result});
-
       chartInputs.addInput(obj);
+
       var inc = chartInputs.getLength() - 1;
       createChartDiv(inc, true);
-
-      //  Set up modal to display PNG
-      $('#btnChartDivImg'+(inc)).tooltip();
-      $('#btnChartDivImg'+(inc)).click(function(){
-        var c = $('#imgDiv').children();
-        if (c) { c.remove(); }
-        $('#imgDiv').append("<img width='" + imgWidth + "'  src='"+ chartInputs.getImg(inc)+"'>");
-        $('#imgDiv').css('margin-left', '-5px')
-        $('#modalImg').modal();
-        $('.modal-body').width(modalWidth)
-      });
-
-      //  Set up modal to display/edit JSON request
-      $('#btnChartDivJSON'+(inc)).tooltip();
-      $('#btnChartDivJSON'+(inc)).click(function() {
-        displayEditor(inc);
-      });
 
       deferred.resolve(evt.target.result);
     } // fileEventHandler
