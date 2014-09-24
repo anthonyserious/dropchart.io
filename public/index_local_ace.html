@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="dropchart.io - a dynamic chart/graph sharing application">
+    <meta name="author" content="Anthony Schneider">
+    <link rel="icon" href="favicon.ico">
+
+    <title>dropchart.io</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Fascinate' rel='stylesheet' type='text/css'>
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!--<script src="/js/ie10-viewport-bug-workaround.js"></script>-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!--[if lte IE 7]>
+      <link rel="stylesheet" type="text/css" href="ie-only.css">
+    <![endif]-->
+
+    <link type="text/css" rel="stylesheet" href="/css/dropchart.css">
+    
+  </head>
+  <body>
+    <div class="jumbotron" align="center">
+      <div class="ie-only"><p>To use Dropchart, please upgrade your browser, we suggest Chrome.<p/></div>
+      <div>
+        <h1 id="dropchart-title-h1">dropchart.io</h1>
+        <p>
+        <div class="desktop-main">
+          <i>Drop your CSV or JSON files anywhere on the page to generate some very pretty charts.</i>
+        </div>
+        <div class="mobile-main">
+          <i>Select your CSV or JSON files to generate some very pretty charts.</i>
+          <p><br>
+          <span class="btn btn-default btn-file">
+            Browse <input id="inputFiles" name="files[]" multiple type="file">
+          </span>
+          <!--<input type="file" id="inputFiles" name="files[]" multiple />-->
+        </div>
+        <p><br>
+        <div class="btn-group">
+          <a id="btnHelp" class="btn dc-btn" href="dropchart-io-samples.zip">Samples</a>
+          <button id="btnEditor" class="btn dc-btn" data-toggle="modal" data-target="#modalEditor">Editor</button>
+          <button id="btnHelp" class="btn dc-btn" data-toggle="modal" data-target="#modalHelp">Help</button>
+          <button id="btnAbout" class="btn dc-btn" data-toggle="modal" data-target="#modalAbout">About</button>
+        </div>
+      </div>
+    </div><!-- // jumbotron -->
+
+    <div class="container">
+      <!-- row -->
+      <div class="col-md-3">&nbsp;</div>
+      <div class="col-md-6" align="center">
+        <!--<i>advertisement here?</i>-->
+      </div><!-- col-md-6 -->
+      <div class="col-md-3">&nbsp;</div>
+    </div><!-- //container -->
+
+    <!-- chart container -->
+    <div class="container" id="chartParent">
+    </div><!-- //container -->
+
+    <!-- empty placeholder -->
+    <div class="container">
+      <!-- row -->
+      <div class="col-md-3">&nbsp;</div>
+      <div class="col-md-6" align="center">
+        <!--<i>advertisement here?</i>-->
+      </div><!-- col-md-6 -->
+      <div class="col-md-3">&nbsp;</div>
+    </div><!-- //container -->
+
+
+
+    <!-- about -->
+    <div class="modal fade" id="modalAbout" tabindex="-1" role="dialog" aria-labelledby="modalAboutLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="modalAboutLabel">About dropchart.io</h4>
+          </div>
+          <div class="modal-body">
+<h4>Who</h4>
+<B>dropchart.io</b> was conceived and developed by <a href="https://www.linkedin.com/pub/anthony-schneider/9/72/70a">Anthony Schneider</a>, with assists from <a href="http://mattlucas.co">Matt Lucas</a>.
+
+<h4>Why</h4>
+Because data visualization should be easy and accessible.  Sometimes you want to quickly render a pie chart breaking down presidential job approval ratings.  Maybe you don’t want to import your CSV data in Excel, highlight the columns you want, format it, etc.  Maybe you don’t even have Excel (or know what Google Docs is).  <b>dropchart.io</b> came about mostly because Anthony does a lot of performance engineering at his job, which means generating lots of numbers and trying to find (deep?) meaning in them.
+
+<h4>What’s the technology behind dropchart.io?</h4>
+<b>dropchart.io</b> is built with a lot of Javascript. The server component is built on Node.JS/Express, but the bulk of the work is client-side, using HTML5, jQuery (http://jquery.com/), PapaParse (http://papaparse.com), and Google’s Visualization API (https://developers.google.com/chart/).  The plan is to one day integrate with additional chart generation providers like Shutterstock’s very sexy Rickshaw.
+
+<h4>dropchart.io is a free service and is provided without warranty</h4>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+<p>
+<div align="center">&copy; 2014 Anthony Schneider</div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- // about modal -->
+
+    <!-- help -->
+    <div class="modal fade" id="modalHelp" tabindex="-1" role="dialog" aria-labelledby="modalHelpLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="modalHelpLabel">How does dropchart.io work?</h4>
+          </div>
+          <div class="modal-body">
+<h4>How do I use dropchart.io?</h4>
+It’s pretty easy.  Assuming that you are using a modern web browser (Chrome, Safari >= 6, Internet Explorer >= 10), then just drag and drop one or more files onto the dropchart.io page, and you’ll get some nice charts.
+
+<h4>What file formats are supported?</h4>
+dropchart.io supports files with CSV and JSON data.  There are several <a href="dropchart-io-samples.zip">samples</a> of JSON and CSV dropchart.io requests.
+
+The formatting in general depends on the chart type you want.  By default, all CSV charts will use the Stepped Area Chart (https://developers.google.com/chart/interactive/docs/gallery/steppedareachart).  
+
+<h4>Are there any examples I could look at?</h4>
+Yes!  Take a look at the <a href="dropchart-io-samples.zip">samples</a>.
+
+<h4>How should CSV files be formatted?</h4>
+CSV files will be parsed using the PapaParse (http://papaparse.com/)  library.  You can find some CSV examples in the <a href="dropchart-io-samples.zip">samples</a> collection.
+
+For CSV files, dropchart.io will test whether the first column - after the first row, which is always considered a header row - contains numeric or string values.  If it contains string values, then the first column will be interpreted as the chart’s X-axis.  If it only contains numeric values, then dropchart.io will automatically add a column called “Series” for the X-axis, with each row getting a new series sequence number.
+
+For example, take this CSV file of Gallup approval ratings for President Nixon from January of each year of his presidency:
+<p>
+<pre>
+Nixon's Approval Rating
+59
+61
+57
+50
+51
+23
+</pre>
+
+These data give you a chart with automatic X-axis sequence numbers:
+<p><img src="img/help_img_1.png">
+<p>This is the correct ordering, but perhaps it would be more meaningful to have the year for each approval rating.  Suppose you try this instead:
+<p>
+<pre>
+Year,Nixon's Approval Rating
+1969,59
+1970,61
+1971,57
+1972,50
+1973,51
+1974,23
+</pre>
+
+<p><img src="img/help_img_2.png">
+<p>Since the first column contains numbers, dropchart.io interprets the values as years.  Even if you add quotes around the year the values will be interpreted as numbers.  Instead, you can add some non-numeric characters (besides quoted) in there, like this:
+
+<p><pre>
+Year,Nixon's Approval Rating
+1-1-1969,59
+1-1-1970,61
+1-1-1971,57
+1-1-1972,50
+1-1-1973,51
+1-1-1974,23
+</pre>
+
+<p><img src="img/help_img_3.png">
+<p>It’s a bit cludgy, but that’s how it goes with CSV data.  If you want to be more explicit about the data, try building it in JSON.
+
+<h4>How should JSON files be formatted?</h4>
+dropchart.io JSON requests have the following basic format.  The first section is your options, and the second section is your values.  For most chart types, values contains an array of arrays, i.e. [ [1], [2], [3] ]:
+
+<p><pre>
+{
+  "options": {
+    "title":"Server CPU Utilization"
+  },
+  "values":[
+    ["date","user","sys"],
+    ["02/08/14 00:53:22",3,1],
+    ["02/08/14 00:53:32",97,1],
+    ["02/08/14 00:53:42",2,1]
+  ]
+}
+</pre>
+
+<p><img src="img/help_img_4.png">
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- // help modal -->
+    
+    <!-- chart PNG -->
+    <div class="modal fade" id="modalImg" tabindex="-1" role="dialog" aria-labelledby="modalImgLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content dcModal">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="modalImgLabel">PNG chart representation</h4>
+          </div>
+          <div class="modal-body">
+            <div id="imgDiv"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- // chart PNG -->
+
+    <!-- chart JSON -->
+    <div class="modal fade" id="modalJSON" tabindex="-1" role="dialog" aria-labelledby="modalJSONLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content dcModal">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="modalJSONLabel">JSON request</h4>
+          </div>
+          <div class="modal-body">
+            <div id="jsonDiv"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- // chart JSON -->
+
+    <!-- Editor -->
+    <div class="modal fade" id="modalEditor" tabindex="-1" role="dialog" aria-labelledby="modalEditorLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content dcModal">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="modalEditorLabel">JSON editor</h4>
+          </div>
+          <div id="editorDiv" class="modal-body dc-editor"></div>
+          <div class="modal-footer">
+            <button type="button" id="btnEditorSave" class="btn btn-default" data-dismiss="modal">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- // Editor -->
+
+  </body>
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <!--<script src="js/jquery.js"></script>-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <!--<script src="http://cdn.jsdelivr.net/ace/1.1.6/min/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="http://cdn.jsdelivr.net/ace/1.1.6/min/mode-json.js" type="text/javascript" charset="utf-8"></script>-->
+  <script src="/js/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/js/mode-json.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/papaparse.js"></script>
+  <script src="/js/dropchart.js"></script>
+  <script>
+    $(document).ready(function() { dropchart.init($(document), $('#chartParent')); });
+  </script>
+</html>
+
