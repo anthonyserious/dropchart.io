@@ -235,6 +235,9 @@ svg {
   .desktop-main {
     display: none;
   }
+  .modal-dialog {
+    overflow-wrap: break-word;
+  }
 }
 
 @media (min-width:501px){
