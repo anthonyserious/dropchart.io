@@ -1,7 +1,7 @@
 {
 	"options":{
 	"chartType":"BubbleChart",
-	"title": "Correlation between life expectancy, fertility rate and population of some world countries (2010)",
+	"title": "BubbleChart Example (from Google)",
 	"hAxis": {"title": "Life Expectancy"},
 	"vAxis": {"title": "Fertility Rate"},
 	"bubble": {

@@ -1370,7 +1370,7 @@ exports.isOldIE = exports.isIE && exports.isIE < 9;
 exports.isGecko = exports.isMozilla = (window.Controllers || window.controllers) && window.navigator.product === "Gecko";
 exports.isOldGecko = exports.isGecko && parseInt((ua.match(/rv\:(\d+)/)||[])[1], 10) < 4;
 exports.isOpera = window.opera && Object.prototype.toString.call(window.opera) == "[object Opera]";
-exports.isWebKit = parseFloat(ua.split("WebKit/")[1]) || undefined;
+exports.isWebKit = false; //parseFloat(ua.split("WebKit/")[1]) || undefined;
 
 exports.isChrome = parseFloat(ua.split(" Chrome/")[1]) || undefined;
 
@@ -2075,6 +2075,7 @@ var TextInput = function(parentNode, host) {
                 host.onPaste(data);
             pasted = false;
         } else if (data == PLACEHOLDER.charAt(0)) {
+
             if (afterContextMenu)
                 host.execCommand("del", {source: "ace"});
             else // some versions of android do not fire keydown when pressing backspace
@@ -2192,7 +2193,7 @@ var TextInput = function(parentNode, host) {
         inComposition = {};
         host.onCompositionStart();
         setTimeout(onCompositionUpdate, 0);
-        host.on("mousedown", onCompositionEnd);
+        //XXX host.on("mousedown", onCompositionEnd);
         if (!host.selection.isEmpty()) {
             host.insert("");
             host.session.markUndoGroup();

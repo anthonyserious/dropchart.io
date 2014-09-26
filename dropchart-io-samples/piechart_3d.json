@@ -1,8 +1,9 @@
 {
 	"options": {
-		"title": "PieChart Example",
+		"title": "3D PieChart Example",
 		"height": "350",
 		"chartType": "PieChart",
+		"is3D":"true",
 		"titleTextStyle": {
 			"fontName": "Trebuchet MS, Helvetica, sans-serif",
 			"fontSize": "24"
@@ -34,4 +35,3 @@
 		]
 	]
 }
-

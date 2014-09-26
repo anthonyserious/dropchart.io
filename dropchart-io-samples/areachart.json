@@ -1,10 +1,9 @@
 {
 	"options": {
-		"title": "Stacked SteppedAreaChart Example",
+		"title": "AreaChart Example",
 		"height": "350",
-		"chartType": "SteppedAreaChart",
-		"isStacked":"true",
-    "titleTextStyle": {
+		"chartType": "AreaChart",
+		"titleTextStyle": {
 			"fontName": "Trebuchet MS, Helvetica, sans-serif",
 			"fontSize": "24"
 		},
