@@ -238,6 +238,9 @@ svg {
   .modal-dialog {
     overflow-wrap: break-word;
   }
+  .modal-dialog img{
+    width: 100%;
+  }
 }
 
 @media (min-width:501px){
