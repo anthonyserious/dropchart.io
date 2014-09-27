@@ -1,0 +1,62 @@
+{
+	"options": {
+		"title": "ScatterChart Example",
+		"height": "350",
+		"chartType": "ScatterChart",
+		"titleTextStyle": {
+			"fontName": "Trebuchet MS, Helvetica, sans-serif",
+			"fontSize": "24"
+		},
+		"legend": {
+			"textStyle": {
+				"fontName": "lucida console",
+				"fontSize": "12"
+			},
+			"position": "bottom"
+		},
+		"backgroundColor": {
+			"stroke": "#055333",
+			"strokeWidth": 0
+		},
+		"hAxis": {
+			"title": "Age",
+			"minValue": 0,
+			"maxValue": 15
+		},
+		"vAxis": {
+			"title": "Weight",
+			"minValue": 0,
+			"maxValue": 15
+		}
+	},
+	"values": [
+		[
+			"Age",
+			"Weight"
+		],
+		[
+			8,
+			12
+		],
+		[
+			4,
+			5.5
+		],
+		[
+			11,
+			14
+		],
+		[
+			4,
+			5
+		],
+		[
+			3,
+			3.5
+		],
+		[
+			6.5,
+			7
+		]
+	]
+}
