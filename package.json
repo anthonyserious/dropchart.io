@@ -1,0 +1,31 @@
+{
+  "name": "dropchart.io",
+  "description": "Drag and drop JSON and CSV data to generate charts",
+  "version": "0.1.0",
+  "author": {
+    "name": "Anthony Schneider"
+  },
+  "contributors": [
+    {
+      "name": "Matt Lucas"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/anthonyserious/dropchart.io"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "~4.6",
+    "casperjs": "~1.1.0"
+  },
+  "scripts": {
+    "prepublish": "npm prune",
+    "test": "./node_modules/casperjs/bin/casperjs test ./tests/unittests-casper.js"
+  },
+  "bugs": {
+    "url": "https://github.com/anthonyserious/dropchart.io/issues"
+  },
+  "homepage": "http://www.dropchart.io"
+}
+
