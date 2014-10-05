@@ -136,7 +136,7 @@ var dropchart = function() {
       buttonsText = '<button type="button" class="btn btn-default btn-lg dc-btn-side" id="btnChartDivImg'+inc+'" data-toggle="tooltip" data-placement="bottom" title="Generate PNG image from chart."><span class="glyphicon glyphicon-download-alt"></span></button>';
 
       //  Button to display JSON
-      buttonsText += '<p><button type="button" class="btn btn-default btn-lg dc-btn-side" id="btnChartDivJSON'+inc+'" data-toggle="tooltip" data-placement="bottom" title="Display JSON chart request."><span class="glyphicon glyphicon-file"></span></button>';
+      buttonsText += '<p><button type="button" class="btn btn-default btn-lg dc-btn-side" id="btnChartDivJSON'+inc+'" data-toggle="tooltip" data-placement="bottom" title="Edit JSON description of this chart."><span class="glyphicon glyphicon-file"></span></button>';
 
       //  Select menu to select different chart type
       buttonsText += '<select class="form-control dc-select" id="select'+inc+'">';
