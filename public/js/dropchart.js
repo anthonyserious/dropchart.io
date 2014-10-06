@@ -218,7 +218,7 @@ var dropchart = function() {
         } 
         obj = {options: newOptions, values: inData['values']};
       }
-    } else { // Just assume that the default is CSV.  if (fileType === "csv") {
+    } else if (fileType = "csv") { // Just assume that the default is CSV.  if (fileType === "csv") {
       var newOptions = {};
       for (var k in defaultOptions) {
         newOptions[k] = defaultOptions[k];
@@ -237,6 +237,8 @@ var dropchart = function() {
         }
       }
       obj = {options: newOptions, values: inData.data};
+    } else {
+    
     }
     return obj;
   }
