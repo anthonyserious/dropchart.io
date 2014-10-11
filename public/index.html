@@ -28,10 +28,37 @@
     <![endif]-->
 
     <link type="text/css" rel="stylesheet" href="/css/dropchart.css">
+
+    <!-- linked in login -->
+
+  <script type="text/javascript" src="http://platform.linkedin.com/in.js">
+  api_key: 77ffc14tj3ltcj
+  authorize: true
+  credentials_cookie: true
+  scope: r_fullprofile
+</script>
+
+
+
+
+<!-- end linked in login -->
     
   </head>
   <body>
+  
+
+
+
+
     <div class="jumbotron" align="center">
+    
+    <div class="linked-sign-in">
+      <script type="in/Login">
+      Hello, <?js= firstName ?> <?js= lastName ?>.
+      </script>
+    </div>
+    
+
       <div class="ie-only"><p>To use Dropchart, please upgrade your browser, we suggest Chrome.<p/></div>
       <div>
         <h1 id="dropchart-title-h1">dropchart.io</h1>
@@ -273,8 +300,30 @@ dropchart.io JSON requests have the following basic format.  The first section i
   <script src="/js/bootstrap.min.js"></script>
   <script src="/js/papaparse.js"></script>
   <script src="/js/dropchart.js"></script>
+  <script src="/js/linkedin.js"></script>
+
   <script>
     $(document).ready(function() { dropchart.init($(document), $('#chartParent')); });
   </script>
-</html>
 
+
+
+
+<!-- linked in login listeners -->
+<script>
+
+$('.linked-sign-in').on('click', function(e) {
+  e.preventDefault();
+  $(this).find("span").last().click();
+})
+</script>
+
+<script>
+   IN.Event.on(IN, "auth", function(event) {
+    getMember();
+   });
+
+</script>
+<!-- end linked in listeners --> 
+
+</html>
