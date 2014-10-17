@@ -31,12 +31,12 @@
 
     <!-- linked in login -->
 
-  <script type="text/javascript" src="http://platform.linkedin.com/in.js">
-  api_key: 77ffc14tj3ltcj
-  authorize: true
-  credentials_cookie: true
-  scope: r_fullprofile
-</script>
+    <script type="text/javascript" src="http://platform.linkedin.com/in.js">
+    api_key: 77ffc14tj3ltcj
+    authorize: true
+    credentials_cookie: true
+    scope: r_fullprofile
+    </script>
 
 
 
@@ -55,6 +55,11 @@
     <div class="linked-sign-in">
       <script type="in/Login">
       Hello, <?js= firstName ?> <?js= lastName ?>.
+      </script>
+    </div>
+    <div class="linked-sign-out hidden">
+      <script type="in/Login">
+        Log out, <?js= firstName ?> <?js= lastName ?>.
       </script>
     </div>
     
@@ -315,13 +320,39 @@ dropchart.io JSON requests have the following basic format.  The first section i
 $('.linked-sign-in').on('click', function(e) {
   e.preventDefault();
   $(this).find("span").last().click();
-})
+  $('.linked-sign-in').addClass('hidden');
+  $('.linked-sign-out').removeClass('hidden');
+});
+</script>
+
+<script>
+
+$('body').on('click', '.linked-sign-out', function(e) {
+  e.preventDefault();
+  IN.User.logout();
+  $('.in-select-container').fadeOut(1000, function(e) {
+    $('.in-select-container').html('');
+  });
+});
+
+
 </script>
 
 <script>
    IN.Event.on(IN, "auth", function(event) {
     getMember();
+    $('.linked-sign-in').addClass('hidden');
+    $('.linked-sign-out').removeClass('hidden');
    });
+
+</script>
+
+<script>
+
+  IN.Event.on(IN, "logout", function(event) {
+    $('.linked-sign-in').removeClass('hidden');
+    $('.linked-sign-out').addClass('hidden');
+  });
 
 </script>
 <!-- end linked in listeners --> 
