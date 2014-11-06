@@ -21,6 +21,11 @@ var dropchart = function() {
       addInput: function(f) {
         inputs.push({input: f, img: ""});
       },
+      addInputs: function(f) {
+        Object.keys(f).forEach(function(e) {
+          inputs.push({input: f[e], img: ""});
+        });
+      },
       getInput: function(n) {
         return inputs[n].input;
       },
@@ -107,6 +112,8 @@ var dropchart = function() {
             if (input['status']) {
               $('#chartDiv'+i).html("<p><b>Filename: </b>"+input.filename+"</p><p><b>Status: </b>"+input['status']+"</p><p><b>Message: </b>"+input.message+"</p>");
             } else {
+              console.log("input");
+              console.log(input);
               var chartData = google.visualization.arrayToDataTable(input.values);
               var func;
               if (input.options.chartType) {// && chartTypes[chartInputs[i].options.chartType]) {
@@ -218,7 +225,7 @@ var dropchart = function() {
         } 
         obj = {options: newOptions, values: inData['values']};
       }
-    } else if (fileType = "csv") { // Just assume that the default is CSV.  if (fileType === "csv") {
+    } else if (fileType === "csv") { // Just assume that the default is CSV.  if (fileType === "csv") {
       var newOptions = {};
       for (var k in defaultOptions) {
         newOptions[k] = defaultOptions[k];
@@ -238,7 +245,15 @@ var dropchart = function() {
       }
       obj = {options: newOptions, values: inData.data};
     } else {
-    
+      obj = parseToDropchartIo.parseVmstat_Ubuntu(input.data, input.fileName);
+      Object.keys(obj.custom).forEach(function(e) {
+        var newOptions = {};
+        for (var k in defaultOptions) {
+          newOptions[k] = defaultOptions[k];
+        }
+        newOptions.title = obj.custom[e].options.title;
+        obj.custom[e].options = newOptions;
+      });
     }
     return obj;
   }
@@ -290,10 +305,17 @@ var dropchart = function() {
  
     function readerOnLoadEventHandler(evt) {
       var obj = parseInput({fileName: file.name, data: evt.target.result});
-      chartInputs.addInput(obj);
-
-      var inc = chartInputs.getLength() - 1;
-      createChartDiv(inc, true);
+      if (obj.hasOwnProperty("inputType")) {
+        var lenStart = chartInputs.getLength();
+        chartInputs.addInputs(obj.custom);
+        var lenEnd = chartInputs.getLength();
+        for (var i = lenStart; i < lenEnd; i++) {
+          createChartDiv(i, true);
+        }
+      } else {
+        chartInputs.addInput(obj);
+        createChartDiv(chartInputs.getLength() - 1, true);
+      }
 
       deferred.resolve(evt.target.result);
     } // fileEventHandler
