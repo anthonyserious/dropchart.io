@@ -27,11 +27,34 @@
       <link rel="stylesheet" type="text/css" href="ie-only.css">
     <![endif]-->
 
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap-social.css">
     <link type="text/css" rel="stylesheet" href="/css/dropchart.css">
+
+    <!-- LinkedIn login -->
+    <script type="text/javascript" src="http://platform.linkedin.com/in.js">
+    api_key: 77ffc14tj3ltcj
+    authorize: true
+    credentials_cookie: true
+    scope: r_fullprofile
+    </script>
+    <!-- end LinkedIn login -->
     
   </head>
   <body>
     <div class="jumbotron" align="center">
+      <div class="linked-sign-in" align="right">
+        <script type="in/Login">
+        Hello, <?js= firstName ?> <?js= lastName ?>.
+        </script>
+      </div>
+    <div class="linked-sign-out hidden" align="right">
+      <script type="in/Login">
+        Log out, <?js= firstName ?> <?js= lastName ?>.
+      </script>
+    </div>
+    
+
       <div class="ie-only"><p>To use Dropchart, please upgrade your browser, we suggest Chrome.<p/></div>
       <div>
         <h1 id="dropchart-title-h1">dropchart.io</h1>
@@ -274,8 +297,52 @@ dropchart.io JSON requests have the following basic format.  The first section i
   <script src="/js/papaparse.js"></script>
   <script src="/js/dropchart.js"></script>
   <script src="/js/parse-to-dropchart-io.js"></script>
+  <script src="/js/linkedin.js"></script>
   <script>
     $(document).ready(function() { dropchart.init($(document), $('#chartParent')); });
   </script>
-</html>
 
+  <!-- LinkedIn login listeners -->
+  <script>
+
+  $('.linked-sign-in').on('click', function(e) {
+    e.preventDefault();
+    $(this).find("span").last().click();
+    $('.linked-sign-in').addClass('hidden');
+    $('.linked-sign-out').removeClass('hidden');
+  });
+  </script>
+
+  <script>
+
+  $('body').on('click', '.linked-sign-out', function(e) {
+    e.preventDefault();
+    IN.User.logout();
+    $('.in-select-container').fadeOut(1000, function(e) {
+      $('.in-select-container').html('');
+    });
+  });
+
+
+  </script>
+
+  <script>
+     IN.Event.on(IN, "auth", function(event) {
+      getMember();
+      $('.linked-sign-in').addClass('hidden');
+      $('.linked-sign-out').removeClass('hidden');
+     });
+
+  </script>
+
+  <script>
+
+    IN.Event.on(IN, "logout", function(event) {
+      $('.linked-sign-in').removeClass('hidden');
+      $('.linked-sign-out').addClass('hidden');
+    });
+
+  </script>
+  <!-- end LinkedIn listeners --> 
+
+</html>
