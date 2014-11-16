@@ -112,8 +112,6 @@ var dropchart = function() {
             if (input['status']) {
               $('#chartDiv'+i).html('<div class="panel panel-default"><div class="panel-heading"><b>Filename: </b>'+input.filename+', <b>Status: </b>'+input['status']+'</div><div class="panel-body"><b>Message:</b><p>'+input.message+'</div></div>');
             } else {
-              console.log("input");
-              console.log(input);
               var chartData = google.visualization.arrayToDataTable(input.values);
               var func;
               if (input.options.chartType) {// && chartTypes[chartInputs[i].options.chartType]) {
