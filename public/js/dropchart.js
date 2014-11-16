@@ -110,7 +110,7 @@ var dropchart = function() {
           for (var i = 0; i < chartInputs.getLength(); i++) {
             var input = chartInputs.getInput(i);
             if (input['status']) {
-              $('#chartDiv'+i).html("<p><b>Filename: </b>"+input.filename+"</p><p><b>Status: </b>"+input['status']+"</p><p><b>Message: </b>"+input.message+"</p>");
+              $('#chartDiv'+i).html('<div class="panel panel-default"><div class="panel-heading"><b>Filename: </b>'+input.filename+', <b>Status: </b>'+input['status']+'</div><div class="panel-body"><b>Message:</b><p>'+input.message+'</div></div>');
             } else {
               console.log("input");
               console.log(input);
@@ -159,7 +159,7 @@ var dropchart = function() {
         +buttonsText
         +'&nbsp;</div>'
         + '<div class="col-md-10" align="center">'
-        +   '<div id="chartDiv'+inc+'" class="chartDiv drop-shadow"></div>'
+        +   '<div id="chartDiv'+inc+'" align="left" class="chartDiv drop-shadow"></div>'
         + '</div>'
         +'<div class="col-md-1">&nbsp;</div>'
         +'</div>');
@@ -204,10 +204,14 @@ var dropchart = function() {
     var fileType = input.fileName.split('.').pop().toLowerCase();
     
     if (fileType === "json") {
-      try { 
-        inData = JSON.parse(input.data);
+      try {
+        if (jsonlint) {
+          inData = jsonlint.parse(input.data);
+        } else {
+          inData = JSON.parse(input.data);
+        }
       } catch(e) { 
-        obj = {filename: input.fileName, status: "syntax error", message: e, options:{title:input.fileName} };
+        obj = {filename: input.fileName, status: "syntax error", message: "<pre>"+e+"</pre>", options:{title:input.fileName} };
       }
       
       if (obj.hasOwnProperty('status') === false) {
