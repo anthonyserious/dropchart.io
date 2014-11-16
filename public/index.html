@@ -43,16 +43,17 @@
   </head>
   <body>
     <div class="jumbotron" align="center">
+      <!-- Disable linkedin login for now.
       <div class="linked-sign-in" align="right">
         <script type="in/Login">
         Hello, <?js= firstName ?> <?js= lastName ?>.
         </script>
       </div>
-    <div class="linked-sign-out hidden" align="right">
-      <script type="in/Login">
-        Log out, <?js= firstName ?> <?js= lastName ?>.
-      </script>
-    </div>
+      <div class="linked-sign-out hidden" align="right">
+        <script type="in/Login">
+          Log out, <?js= firstName ?> <?js= lastName ?>.
+        </script>
+      </div>-->
     
 
       <div class="ie-only"><p>To use Dropchart, please upgrade your browser, we suggest Chrome.<p/></div>
@@ -297,14 +298,14 @@ dropchart.io JSON requests have the following basic format.  The first section i
   <script src="/js/papaparse.js"></script>
   <script src="/js/dropchart.js"></script>
   <script src="/js/parse-to-dropchart-io.js"></script>
-  <script src="/js/linkedin.js"></script>
+  <!--<script src="/js/linkedin.js"></script>-->
   <script src="/js/jsonlint.js"></script>
   <script>
     $(document).ready(function() { dropchart.init($(document), $('#chartParent')); });
   </script>
 
   <!-- LinkedIn login listeners -->
-  <script>
+  <!--<script>
 
   $('.linked-sign-in').on('click', function(e) {
     e.preventDefault();
@@ -343,7 +344,7 @@ dropchart.io JSON requests have the following basic format.  The first section i
       $('.linked-sign-out').addClass('hidden');
     });
 
-  </script>
+  </script>-->
   <!-- end LinkedIn listeners --> 
 
 </html>
