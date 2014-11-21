@@ -32,6 +32,9 @@ var dropchart = function() {
       setInput: function(n, f) {
         inputs[n] = {input: f, img: ""};
       },
+      getInputs: function() {
+        return inputs;
+      },
       setImg: function(n, s) {
         inputs[n].img = s;
       },
@@ -332,7 +335,24 @@ var dropchart = function() {
     return deferred.promise();
   } // readFile()
 
+  function saveLayout() {
+    var data = {
+      owner: "test",
+      timestamp: "2014/11/14.11:03:00",
+      inputs: chartInputs.getInputs().map(function(e) { return e.input; }),
+    }
+    console.log("data:");
+    console.log(data);
+    $.ajax({
+      type: "POST",
+      url: "/save",
+      data: JSON.stringify(data),
+      contentType: "application/json"
+    });
+  } //saveLayout
+
   return {
+    saveLayout:function() { saveLayout(); },
     init:function(inDropArea, inChartParent)  {
       dropArea = inDropArea;
       chartParent = inChartParent;
