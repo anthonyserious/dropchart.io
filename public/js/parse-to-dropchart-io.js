@@ -21,7 +21,7 @@ ParseToDropchartIo.prototype.parseVmstat_Ubuntu = function(inputString, inputTit
 
   var obj = {};
   var cols = [ 'r', 'b', 'swpd', 'free', 'buff', 'cache', 'si', 'so', 'bi', 'bo', 'in', 'cs', 'us', 'sy', 'id', 'wa', 'st' ];
-  var lines = inputString.split("\n");
+  var lines = inputString.trim().split("\n");
   var headerRe = /^procs -----------memory----------/;
   var headerRe2 = /buff/; // Good enough???
   var emptyLineRe = /^\s*$/;
@@ -40,13 +40,24 @@ ParseToDropchartIo.prototype.parseVmstat_Ubuntu = function(inputString, inputTit
     if (a === null && b === null && c === null) {
       var arr = line.trim().split(/\s+/);
       arr = arr.map(parseInt);
-      if (arr.length === cols.length) {
+      if(arr.length + 1 === cols.length) {
+        cols.pop();
+        if(results.custom.cpu.values[0].length === 6) {
+          results.custom.cpu.values[0].pop();
+        }
+      }
+      console.log(cols.length);
+      if (arr.length === cols.length ) {
         results.custom.procs.values.push([i.toString(), arr[0], arr[1]]);
         results.custom.memory.values.push([i.toString(), arr[2], arr[3], arr[4], arr[5]]);
         results.custom.swap.values.push([i.toString(), arr[6], arr[7]]);
         results.custom.io.values.push([i.toString(), arr[8], arr[9]]);
         results.custom.system.values.push([i.toString(), arr[10], arr[11]]);
-        results.custom.cpu.values.push([i.toString(), arr[12], arr[13], arr[14], arr[15], arr[16]]);
+        if (cols.length === 17) {
+          results.custom.cpu.values.push([i.toString(), arr[12], arr[13], arr[14], arr[15], arr[16]]);
+        } else {
+          results.custom.cpu.values.push([i.toString(), arr[12], arr[13], arr[14], arr[15]]);
+        }
       } else {
         obj.status = "error";
         return obj;
