@@ -36,9 +36,6 @@ var dropchart = function() {
         return inputs;
       },
       setImg: function(n, s) {
-        console.log(inputs);
-        console.log(n);
-        console.log(s);
         inputs[n].img = s;
       },
       getImg: function(n) {
@@ -114,7 +111,6 @@ var dropchart = function() {
         packages:["corechart"],
         callback: function () {
           for (var i = 0; i < chartInputs.getLength(); i++) {
-            console.log("i: "+i);
             var input = chartInputs.getInput(i);
             if (input['status']) {
               $('#chartDiv'+i).html('<div class="panel panel-default"><div class="panel-heading"><b>Filename: </b>'+input.filename+', <b>Status: </b>'+input['status']+'</div><div class="panel-body"><b>Message:</b><p>'+input.message+'</div></div>');
@@ -129,8 +125,10 @@ var dropchart = function() {
               var chart = new func(document.getElementById("chartDiv"+i));
               var chartIndex = i;
               google.visualization.events.addListener(chart, 'ready', function () {
-                console.log(chart.getImageURI());
                 chartInputs.setImg(chartIndex, chart.getImageURI());
+              });
+              google.visualization.events.addListener(chart, 'error', function (err) {
+                console.log(err);
               });
               chart.draw(chartData, input.options);
             }
@@ -347,7 +345,6 @@ var dropchart = function() {
       timestamp: "2014/11/14.11:03:00",
       inputs: chartInputs.getInputs().map(function(e) { return e.input; }),
     }
-    console.log("data:");
     console.log(data);
     $.ajax({
       type: "POST",
